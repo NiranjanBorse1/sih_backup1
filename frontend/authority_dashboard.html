@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authority Dashboard - Command Center</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- 
+      IMPORTANT: Replace YOUR_API_KEY_HERE with your actual Google Maps API key.
+      The callback function is now correctly named 'initDashboard'.
+    -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC6crVsRPttlbmx8JnxO6pvr3ifvQI7n5c&libraries=drawing&callback=initDashboard" async defer></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        #map { height: 550px; border-radius: 1rem; }
+        .incident-log-item:not(:last-child) { border-bottom: 1px solid #e5e7eb; }
+        .gm-style-iw-d { overflow: hidden !important; } /* Fix for info window scrollbar */
+        .status-dot { height: 10px; width: 10px; border-radius: 50%; display: inline-block; margin-right: 8px; }
+        .status-safe { background-color: #10B981; }
+        .status-at-risk { background-color: #F59E0B; }
+        .status-breach, .status-emergency { background-color: #EF4444; }
+        .status-help-dispatched { background-color: #3B82F6; }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <div class="p-8 max-w-screen-2xl mx-auto">
+        <h1 class="text-4xl font-bold text-gray-800">Authority Command Center</h1>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 my-6">
+            <div class="bg-white p-5 rounded-xl shadow"><h3 class="text-gray-500 font-semibold">Active Tourists</h3><p id="metric-active-tourists" class="text-3xl font-bold">0</p></div>
+            <div class="bg-white p-5 rounded-xl shadow"><h3 class="text-gray-500 font-semibold text-red-600">Active Emergencies</h3><p id="metric-emergencies" class="text-3xl font-bold text-red-600">0</p></div>
+            <div class="bg-white p-5 rounded-xl shadow"><h3 class="text-gray-500 font-semibold">Total Incidents Logged</h3><p id="metric-incidents" class="text-3xl font-bold">0</p></div>
+            <div class="bg-white p-5 rounded-xl shadow"><h3 class="text-gray-500 font-semibold">System Status</h3><p class="text-3xl font-bold text-green-600">Operational</p></div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2 bg-white p-6 rounded-2xl shadow">
+                <h3 class="text-lg font-bold text-gray-800 mb-4">Live Operations Map</h3>
+                <div id="map"></div>
+                <div class="flex space-x-4 mt-4">
+                     <button id="drawBtn" class="w-full bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-indigo-700">Draw Restricted Zone</button>
+                     <button id="clearBtn" class="w-full bg-gray-200 text-gray-700 font-bold py-2 px-4 rounded-lg hover:bg-gray-300">Clear Zone</button>
+                </div>
+            </div>
+
+            <div class="space-y-8">
+                <div class="bg-white p-6 rounded-2xl shadow">
+                     <h3 class="text-lg font-bold text-gray-800 mb-4">🚨 Live Alerts</h3>
+                     <div id="alertContainer" class="space-y-4 h-64 overflow-y-auto">
+                        <p class="text-gray-500 text-center pt-20">Monitoring for new alerts...</p>
+                     </div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow">
+                     <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold text-gray-800">Blockchain Incident Log</h3>
+                        <button id="refreshLogBtn" class="text-sm text-indigo-600 font-semibold">Refresh</button>
+                    </div>
+                     <div id="incidentLogContainer" class="space-y-3 h-48 overflow-y-auto">
+                        <p class="text-gray-500 text-center pt-16">Click Refresh to load audit trail.</p>
+                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let map, drawingManager, currentPolygon, infoWindow;
+        let touristMarkers = {};
+        let activeAlerts = {};
+
+        // This function name now matches the callback in the script tag
+        function initDashboard() {
+            map = new google.maps.Map(document.getElementById('map'), { center: { lat: 18.5204, lng: 73.8567 }, zoom: 13 });
+            infoWindow = new google.maps.InfoWindow();
+            drawingManager = new google.maps.drawing.DrawingManager({
+                drawingMode: null, drawingControl: false,
+                polygonOptions: { fillColor: '#FF0000', fillOpacity: 0.25, strokeWeight: 2, strokeColor: '#FF0000' }
+            });
+            drawingManager.setMap(map);
+            google.maps.event.addListener(drawingManager, 'polygoncomplete', handlePolygonComplete);
+
+            document.getElementById('drawBtn').addEventListener('click', () => drawingManager.setDrawingMode('polygon'));
+            document.getElementById('clearBtn').addEventListener('click', clearGeofence);
+            document.getElementById('refreshLogBtn').addEventListener('click', fetchIncidentLog);
+
+            // Start polling for data
+            setInterval(fetchAlerts, 3000);
+            setInterval(updateTouristMarkers, 5000);
+            // Fetch initial data once
+            fetchIncidentLog();
+        }
+
+        function handlePolygonComplete(polygon) {
+            if (currentPolygon) currentPolygon.setMap(null);
+            currentPolygon = polygon;
+            const coordinates = polygon.getPath().getArray().map(p => ({ lat: p.lat(), lng: p.lng() }));
+            fetch('http://127.0.0.1:5003/set_fence', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ coordinates }) });
+            drawingManager.setDrawingMode(null);
+        }
+
+        function clearGeofence() { if (currentPolygon) { currentPolygon.setMap(null); currentPolygon = null; }}
+
+        async function updateTouristMarkers() {
+            try {
+                const response = await fetch('http://127.0.0.1:5001/get_active_tourists');
+                const tourists = await response.json();
+                document.getElementById('metric-active-tourists').textContent = tourists.length;
+
+                const statusColors = { safe: '#10B981', 'at-risk': '#F59E0B', breach: '#EF4444', emergency: '#EF4444', 'help-dispatched': '#3B82F6' };
+                
+                const activeIds = tourists.map(t => t.id);
+                for (const id in touristMarkers) {
+                    if (!activeIds.includes(id)) {
+                        touristMarkers[id].marker.setMap(null);
+                        delete touristMarkers[id];
+                    }
+                }
+                
+                tourists.forEach(tourist => {
+                    const pos = { lat: tourist.location.lat, lng: tourist.location.lng };
+                    const icon = { path: google.maps.SymbolPath.CIRCLE, scale: 7, fillColor: statusColors[tourist.status] || '#6B7280', fillOpacity:1, strokeColor: 'white', strokeWeight: 2 };
+                    
+                    if (touristMarkers[tourist.id]) {
+                        touristMarkers[tourist.id].marker.setPosition(pos);
+                        touristMarkers[tourist.id].marker.setIcon(icon);
+                        touristMarkers[tourist.id].touristData = tourist;
+                    } else {
+                        const marker = new google.maps.Marker({ position: pos, map: map, icon: icon, title: tourist.name });
+                        marker.addListener('click', () => showTouristInfo(tourist.id));
+                        touristMarkers[tourist.id] = { marker: marker, touristData: tourist };
+                    }
+                });
+            } catch (error) {
+                console.error("Failed to update tourist markers:", error);
+            }
+        }
+
+        function showTouristInfo(touristId) {
+            const { marker, touristData } = touristMarkers[touristId];
+            const content = `
+                <div class="p-2">
+                    <h4 class="font-bold text-lg">${touristData.name}</h4>
+                    <p class="text-sm text-gray-600">ID: ${touristData.id}</p>
+                    <p class="text-sm text-gray-600 capitalize"><span class="status-dot status-${touristData.status}"></span>Status: ${touristData.status.replace('-', ' ')}</p>
+                    <hr class="my-2">
+                    <p class="text-sm"><b>Emergency Contact:</b><br>${touristData.emergencyContact.name} (${touristData.emergencyContact.phone})</p>
+                </div>`;
+            infoWindow.setContent(content);
+            infoWindow.open(map, marker);
+        }
+
+        async function fetchAlerts() {
+            try {
+                const response = await fetch('http://127.0.0.1:5003/get_alerts');
+                const data = await response.json();
+                const activeAlertsFromServer = data.alerts || [];
+                document.getElementById('metric-emergencies').textContent = activeAlertsFromServer.length;
+
+                const container = document.getElementById('alertContainer');
+                const existingAlertIds = Array.from(container.children).map(child => child.id.replace('alert-', ''));
+                const serverAlertIds = activeAlertsFromServer.map(a => a.id);
+
+                // Remove alerts from UI that are no longer sent by the server
+                existingAlertIds.forEach(id => {
+                    if (!serverAlertIds.includes(id) && id) {
+                        const card = document.getElementById(`alert-${id}`);
+                        if (card) card.remove();
+                    }
+                });
+
+                if (activeAlertsFromServer.length === 0 && container.children.length === 0) {
+                    container.innerHTML = '<p class="text-gray-500 text-center pt-20">Monitoring for new alerts...</p>';
+                }
+
+                activeAlertsFromServer.forEach(alert => {
+                    const existingCard = document.getElementById(`alert-${alert.id}`);
+                    if (!existingCard) {
+                        if (container.querySelector('p')) container.innerHTML = '';
+                        container.insertAdjacentHTML('afterbegin', createAlertCard(alert));
+                    } else {
+                        // Check if the status has changed and update if necessary
+                        if (existingCard.dataset.status !== alert.status) {
+                            existingCard.outerHTML = createAlertCard(alert);
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error("Failed to fetch alerts:", error);
+            }
+        }
+        
+        function createAlertCard(alert) {
+            const isAcknowledged = alert.status === 'acknowledged';
+            const bgColor = alert.type === 'SOS_ALERT' ? 'bg-red-100 border-red-500' : 'bg-yellow-100 border-yellow-500';
+            const buttons = isAcknowledged 
+                ? `<button onclick="resolveAlert('${alert.id}')" class="w-full mt-2 bg-green-500 text-white text-sm font-bold py-1 px-3 rounded hover:bg-green-600">Resolve</button>`
+                : `<button onclick="acknowledgeAlert('${alert.id}')" class="w-full mt-2 bg-blue-500 text-white text-sm font-bold py-1 px-3 rounded hover:bg-blue-600">Acknowledge & Dispatch</button>`;
+
+            return `
+                <div id="alert-${alert.id}" data-status="${alert.status}" class="${bgColor} border-l-4 p-3 rounded-lg shadow-sm">
+                    <p class="font-bold text-gray-800">${alert.type.replace('_', ' ')}</p>
+                    <p class="text-sm text-gray-700">${alert.message}</p>
+                    <p class="text-xs text-gray-500">Status: ${alert.status}</p>
+                    ${buttons}
+                </div>`;
+        }
+        
+        async function acknowledgeAlert(alertId) {
+            await fetch('http://127.0.0.1:5003/update_alert_status', {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ alertId: alertId, status: 'acknowledged' })
+            });
+            fetchAlerts();
+        }
+        
+        async function resolveAlert(alertId) {
+             await fetch('http://127.0.0.1:5003/update_alert_status', {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ alertId: alertId, status: 'resolved' })
+            });
+            fetchAlerts();
+        }
+
+        async function fetchIncidentLog() {
+            try {
+                const container = document.getElementById('incidentLogContainer');
+                container.innerHTML = '<p class="text-center">Loading...</p>';
+                const response = await fetch('http://127.0.0.1:5002/chain');
+                const data = await response.json();
+                document.getElementById('metric-incidents').textContent = data.chain.length - 1;
+                container.innerHTML = '';
+                if (data.chain.length <= 1) {
+                    container.innerHTML = '<p class="text-gray-500 text-center pt-16">No incidents recorded yet.</p>';
+                    return;
+                }
+                data.chain.slice(1).reverse().forEach(block => {
+                    const time = new Date(block.timestamp).toLocaleTimeString();
+                    const userName = block.data?.user?.name || block.data?.name || 'System';
+                    const logItem = `
+                        <div class="incident-log-item pb-2">
+                            <p class="font-semibold text-sm text-gray-800">${block.event_type} <span class="text-xs text-gray-500 font-normal float-right">${time}</span></p>
+                            <p class="text-xs text-gray-600">User: ${userName}</p>
+                            <p class="text-xs text-gray-500 truncate" title="${block.hash}">TxID: ${block.hash}</p>
+                        </div>`;
+                    container.insertAdjacentHTML('beforeend', logItem);
+                });
+            } catch (error) {
+                console.error("Failed to fetch incident log:", error);
+            }
+        }
+    </script>
+</body>
+</html>
+
