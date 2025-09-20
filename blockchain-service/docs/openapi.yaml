@@ -1,0 +1,821 @@
+openapi: 3.0.0
+info:
+  title: Tourist Safety Blockchain Service API
+  description: |
+    REST API for managing Tourist Digital Identity (DeID) and Incident Logging 
+    on Hyperledger Fabric blockchain for the Smart Tourist Safety System.
+    
+    This service provides secure, immutable storage and retrieval of tourist 
+    identity information and safety incidents for real-time monitoring and 
+    emergency response coordination.
+  version: 1.0.0
+  contact:
+    name: Team Visioneers
+    email: visioneers@sih2025.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: http://localhost:3001
+    description: Development server
+  - url: https://api.tourist-safety.com
+    description: Production server
+
+tags:
+  - name: Health
+    description: Service health and status endpoints
+  - name: Tourist Identity (DeID)
+    description: Digital Identity management for tourists
+  - name: Incident Management
+    description: Safety incident logging and retrieval
+
+paths:
+  /health:
+    get:
+      tags:
+        - Health
+      summary: Health check endpoint
+      description: Returns the current health status of the blockchain service
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: healthy
+                  service:
+                    type: string
+                    example: blockchain-service
+                  version:
+                    type: string
+                    example: 1.0.0
+                  timestamp:
+                    type: string
+                    format: date-time
+
+  /blockchain/registerDeID:
+    post:
+      tags:
+        - Tourist Identity (DeID)
+      summary: Register new tourist digital identity
+      description: |
+        Creates a new decentralized identity (DeID) for a tourist on the blockchain.
+        Generates public/private key pair and stores identity information immutably.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TouristRegistration'
+            examples:
+              basic_tourist:
+                summary: Basic tourist registration
+                value:
+                  name: "John Doe"
+                  nationality: "USA"
+                  phoneNumber: "+1-555-123-4567"
+                  emergencyContact: "+1-555-987-6543"
+                  email: "john.doe@email.com"
+              indian_tourist:
+                summary: Indian tourist registration
+                value:
+                  name: "Priya Sharma"
+                  nationality: "India"
+                  phoneNumber: "+91-9876543210"
+                  emergencyContact: "+91-9876543211"
+                  email: "priya.sharma@email.com"
+                  dateOfBirth: "1990-05-15"
+                  passportNumber: "M1234567"
+      responses:
+        '201':
+          description: Tourist DeID registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeIDRegistrationResponse'
+        '400':
+          description: Invalid request data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /blockchain/deid/{touristId}:
+    get:
+      tags:
+        - Tourist Identity (DeID)
+      summary: Get tourist digital identity
+      description: Retrieves public information about a tourist's digital identity
+      parameters:
+        - name: touristId
+          in: path
+          required: true
+          description: Unique tourist identifier
+          schema:
+            type: string
+            example: TST_1703123456789_ABC123
+      responses:
+        '200':
+          description: Tourist DeID retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TouristDeIDResponse'
+        '404':
+          description: Tourist not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /blockchain/deid/{touristId}/status:
+    put:
+      tags:
+        - Tourist Identity (DeID)
+      summary: Update tourist status
+      description: Updates the status of a tourist (active, inactive, suspended)
+      parameters:
+        - name: touristId
+          in: path
+          required: true
+          description: Unique tourist identifier
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum: [active, inactive, suspended]
+                  example: inactive
+      responses:
+        '200':
+          description: Tourist status updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusUpdateResponse'
+        '400':
+          description: Invalid status value
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /blockchain/deid/{touristId}/verify:
+    post:
+      tags:
+        - Tourist Identity (DeID)
+      summary: Verify tourist identity
+      description: Verifies tourist identity using digital signature
+      parameters:
+        - name: touristId
+          in: path
+          required: true
+          description: Unique tourist identifier
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                signature:
+                  type: string
+                  description: Digital signature to verify
+                  example: "SHA256_SIGNATURE_HERE"
+                message:
+                  type: string
+                  description: Original message that was signed
+                  example: "verify_identity_2023"
+      responses:
+        '200':
+          description: Identity verification completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerificationResponse'
+
+  /blockchain/logIncident:
+    post:
+      tags:
+        - Incident Management
+      summary: Log safety incident
+      description: |
+        Records a safety incident immutably on the blockchain.
+        Used for geofence breaches, AI anomaly detection, SOS alerts, etc.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IncidentLog'
+            examples:
+              geofence_breach:
+                summary: Geofence breach incident
+                value:
+                  touristId: "TST_1703123456789_ABC123"
+                  eventType: "breach"
+                  location:
+                    latitude: 28.6139
+                    longitude: 77.2090
+                    address: "Red Fort, Delhi, India"
+                    geofenceId: "DANGER_ZONE_001"
+                  severity: "high"
+                  description: "Tourist entered restricted area"
+                  reportedBy: "geofence-system"
+              sos_alert:
+                summary: SOS emergency alert
+                value:
+                  touristId: "TST_1703123456789_ABC123"
+                  eventType: "sos"
+                  location:
+                    latitude: 19.0760
+                    longitude: 72.8777
+                    address: "Mumbai, Maharashtra, India"
+                  severity: "critical"
+                  description: "Emergency SOS triggered by tourist"
+                  reportedBy: "tourist"
+      responses:
+        '201':
+          description: Incident logged successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IncidentLogResponse'
+        '400':
+          description: Invalid incident data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /blockchain/incidents:
+    get:
+      tags:
+        - Incident Management
+      summary: Get incidents
+      description: |
+        Retrieves incidents either for a specific tourist or within a geographic region.
+        Requires either touristId or region parameter.
+      parameters:
+        - name: touristId
+          in: query
+          description: Get incidents for specific tourist
+          schema:
+            type: string
+            example: TST_1703123456789_ABC123
+        - name: region
+          in: query
+          description: JSON string defining geographic bounds
+          schema:
+            type: string
+            example: '{"bounds":{"north":28.7,"south":28.5,"east":77.3,"west":77.1}}'
+        - name: startDate
+          in: query
+          description: Filter incidents from this date (ISO format)
+          schema:
+            type: string
+            format: date-time
+        - name: endDate
+          in: query
+          description: Filter incidents until this date (ISO format)
+          schema:
+            type: string
+            format: date-time
+        - name: limit
+          in: query
+          description: Maximum number of incidents to return (for tourist queries)
+          schema:
+            type: integer
+            default: 50
+            maximum: 1000
+      responses:
+        '200':
+          description: Incidents retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IncidentsResponse'
+        '400':
+          description: Invalid query parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /blockchain/incidents/{incidentId}:
+    put:
+      tags:
+        - Incident Management
+      summary: Update incident status
+      description: Updates incident status and response information (for authorities)
+      parameters:
+        - name: incidentId
+          in: path
+          required: true
+          description: Unique incident identifier
+          schema:
+            type: string
+            example: INC_1703123456789_XYZ456
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IncidentStatusUpdate'
+            examples:
+              resolve_incident:
+                summary: Resolve incident
+                value:
+                  status: "resolved"
+                  responderId: "AUTH_001"
+                  resolutionNotes: "Tourist safely escorted to safe zone"
+              acknowledge_incident:
+                summary: Acknowledge incident
+                value:
+                  status: "in-progress"
+                  responderId: "AUTH_002"
+      responses:
+        '200':
+          description: Incident status updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusUpdateResponse'
+
+  /blockchain/incidents/statistics:
+    get:
+      tags:
+        - Incident Management
+      summary: Get incident statistics
+      description: Retrieves statistical analysis of incidents within date range
+      parameters:
+        - name: startDate
+          in: query
+          description: Statistics from this date (ISO format)
+          schema:
+            type: string
+            format: date-time
+        - name: endDate
+          in: query
+          description: Statistics until this date (ISO format)
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: Statistics retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IncidentStatistics'
+
+components:
+  schemas:
+    TouristRegistration:
+      type: object
+      required:
+        - name
+        - nationality
+        - phoneNumber
+        - emergencyContact
+      properties:
+        name:
+          type: string
+          minLength: 2
+          maxLength: 100
+          description: Full name of the tourist
+          example: "John Doe"
+        nationality:
+          type: string
+          minLength: 2
+          maxLength: 50
+          description: Tourist's nationality
+          example: "USA"
+        phoneNumber:
+          type: string
+          pattern: '^\+?[\d\s\-\(\)]+$'
+          description: Tourist's phone number
+          example: "+1-555-123-4567"
+        emergencyContact:
+          type: string
+          pattern: '^\+?[\d\s\-\(\)]+$'
+          description: Emergency contact phone number
+          example: "+1-555-987-6543"
+        email:
+          type: string
+          format: email
+          description: Tourist's email address
+          example: "john.doe@email.com"
+        dateOfBirth:
+          type: string
+          format: date
+          description: Tourist's date of birth
+          example: "1990-05-15"
+        passportNumber:
+          type: string
+          description: Passport number
+          example: "A1234567"
+        touristId:
+          type: string
+          description: Custom tourist ID (optional, auto-generated if not provided)
+
+    DeIDRegistrationResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          properties:
+            touristId:
+              type: string
+              example: "TST_1703123456789_ABC123"
+            publicKey:
+              type: string
+              example: "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkq..."
+            privateKey:
+              type: string
+              description: "Private key (handle securely in production)"
+              example: "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADAN..."
+            message:
+              type: string
+              example: "Tourist DeID registered successfully"
+        timestamp:
+          type: string
+          format: date-time
+
+    TouristDeIDResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          properties:
+            touristId:
+              type: string
+              example: "TST_1703123456789_ABC123"
+            publicKey:
+              type: string
+              example: "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkq..."
+            name:
+              type: string
+              example: "John Doe"
+            nationality:
+              type: string
+              example: "USA"
+            phoneNumber:
+              type: string
+              example: "+1-555-123-4567"
+            emergencyContact:
+              type: string
+              example: "+1-555-987-6543"
+            registrationTimestamp:
+              type: string
+              format: date-time
+            status:
+              type: string
+              enum: [active, inactive, suspended]
+              example: "active"
+            lastUpdated:
+              type: string
+              format: date-time
+            version:
+              type: string
+              example: "1.0"
+        timestamp:
+          type: string
+          format: date-time
+
+    IncidentLog:
+      type: object
+      required:
+        - touristId
+        - eventType
+        - location
+      properties:
+        touristId:
+          type: string
+          description: Tourist identifier
+          example: "TST_1703123456789_ABC123"
+        eventType:
+          type: string
+          enum: [breach, anomaly, sos, response, resolved, alert]
+          description: Type of safety event
+          example: "breach"
+        location:
+          type: object
+          required:
+            - latitude
+            - longitude
+          properties:
+            latitude:
+              type: number
+              minimum: -90
+              maximum: 90
+              example: 28.6139
+            longitude:
+              type: number
+              minimum: -180
+              maximum: 180
+              example: 77.2090
+            address:
+              type: string
+              example: "Red Fort, Delhi, India"
+            geofenceId:
+              type: string
+              example: "DANGER_ZONE_001"
+        severity:
+          type: string
+          enum: [low, medium, high, critical]
+          default: medium
+          example: "high"
+        description:
+          type: string
+          description: Human-readable description of the incident
+          example: "Tourist entered restricted area"
+        metadata:
+          type: object
+          description: Additional incident metadata
+          example:
+            detectionMethod: "geofence"
+            confidence: 0.95
+        reportedBy:
+          type: string
+          default: system
+          description: Who reported the incident
+          example: "geofence-system"
+
+    IncidentLogResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          properties:
+            incidentId:
+              type: string
+              example: "INC_1703123456789_XYZ456"
+            touristId:
+              type: string
+              example: "TST_1703123456789_ABC123"
+            eventType:
+              type: string
+              example: "breach"
+            timestamp:
+              type: string
+              format: date-time
+            message:
+              type: string
+              example: "Incident logged successfully"
+        timestamp:
+          type: string
+          format: date-time
+
+    IncidentsResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Incident'
+        count:
+          type: integer
+          description: Number of incidents returned
+          example: 5
+        timestamp:
+          type: string
+          format: date-time
+
+    Incident:
+      type: object
+      properties:
+        incidentId:
+          type: string
+          example: "INC_1703123456789_XYZ456"
+        touristId:
+          type: string
+          example: "TST_1703123456789_ABC123"
+        eventType:
+          type: string
+          example: "breach"
+        location:
+          type: object
+          properties:
+            latitude:
+              type: number
+              example: 28.6139
+            longitude:
+              type: number
+              example: 77.2090
+            address:
+              type: string
+              example: "Red Fort, Delhi, India"
+            geofenceId:
+              type: string
+              example: "DANGER_ZONE_001"
+        timestamp:
+          type: string
+          format: date-time
+        severity:
+          type: string
+          example: "high"
+        description:
+          type: string
+          example: "Tourist entered restricted area"
+        status:
+          type: string
+          enum: [open, in-progress, resolved, closed]
+          example: "open"
+        responseTime:
+          type: string
+          format: date-time
+          nullable: true
+        responderId:
+          type: string
+          nullable: true
+        resolutionNotes:
+          type: string
+          example: ""
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    IncidentStatusUpdate:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [open, in-progress, resolved, closed]
+          example: "resolved"
+        responderId:
+          type: string
+          description: ID of the authority responding to incident
+          example: "AUTH_001"
+        resolutionNotes:
+          type: string
+          description: Notes about incident resolution
+          example: "Tourist safely escorted to safe zone"
+
+    StatusUpdateResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          properties:
+            incidentId:
+              type: string
+              example: "INC_1703123456789_XYZ456"
+            newStatus:
+              type: string
+              example: "resolved"
+            updatedAt:
+              type: string
+              format: date-time
+            message:
+              type: string
+              example: "Incident status updated successfully"
+        timestamp:
+          type: string
+          format: date-time
+
+    VerificationResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          properties:
+            touristId:
+              type: string
+              example: "TST_1703123456789_ABC123"
+            verified:
+              type: boolean
+              example: true
+            timestamp:
+              type: string
+              format: date-time
+        timestamp:
+          type: string
+          format: date-time
+
+    IncidentStatistics:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          properties:
+            totalIncidents:
+              type: integer
+              example: 150
+            byEventType:
+              type: object
+              example:
+                breach: 45
+                anomaly: 30
+                sos: 15
+                alert: 60
+            bySeverity:
+              type: object
+              example:
+                low: 50
+                medium: 60
+                high: 30
+                critical: 10
+            byStatus:
+              type: object
+              example:
+                open: 20
+                in-progress: 10
+                resolved: 100
+                closed: 20
+            averageResponseTime:
+              type: integer
+              description: Average response time in minutes
+              example: 12
+            dateRange:
+              type: object
+              properties:
+                from:
+                  type: string
+                  example: "2023-12-01"
+                to:
+                  type: string
+                  example: "2023-12-31"
+            generatedAt:
+              type: string
+              format: date-time
+        timestamp:
+          type: string
+          format: date-time
+
+    ErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: string
+          description: Error message
+          example: "Invalid request data"
+        timestamp:
+          type: string
+          format: date-time
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for API authentication
+
+security:
+  - BearerAuth: []
+
+externalDocs:
+  description: Tourist Safety System Documentation
+  url: https://github.com/Team-Visioneers/tourist-safety-docs

@@ -1,0 +1,152 @@
+version: '3.7'
+
+networks:
+  tourist-safety:
+    name: tourist-safety
+
+services:
+
+  ca.tourismauthority.com:
+    image: hyperledger/fabric-ca:latest
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca.tourismauthority.com
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_PORT=7054
+      - FABRIC_CA_SERVER_OPERATIONS_LISTENADDRESS=0.0.0.0:17054
+    ports:
+      - "7054:7054"
+      - "17054:17054"
+    command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    volumes:
+      - ../config/crypto-config/peerOrganizations/tourismauthority.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca.tourismauthority.com
+    networks:
+      - tourist-safety
+
+  ca.securityngo.com:
+    image: hyperledger/fabric-ca:latest
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca.securityngo.com
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_PORT=8054
+      - FABRIC_CA_SERVER_OPERATIONS_LISTENADDRESS=0.0.0.0:18054
+    ports:
+      - "8054:8054"
+      - "18054:18054"
+    command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    volumes:
+      - ../config/crypto-config/peerOrganizations/securityngo.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca.securityngo.com
+    networks:
+      - tourist-safety
+
+  orderer.example.com:
+    extends:
+      file: peer-base.yaml
+      service: orderer-base
+    container_name: orderer.example.com
+    networks:
+      - tourist-safety
+    volumes:
+      - ../config/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+      - ../config/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp:/var/hyperledger/orderer/msp
+      - ../config/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/:/var/hyperledger/orderer/tls
+      - orderer.example.com:/var/hyperledger/production/orderer
+    ports:
+      - 7050:7050
+      - 7053:7053
+      - 9443:9443
+
+  peer0.tourismauthority.com:
+    container_name: peer0.tourismauthority.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer0.tourismauthority.com
+      - CORE_PEER_ADDRESS=peer0.tourismauthority.com:7051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.tourismauthority.com:7052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.tourismauthority.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.tourismauthority.com:7051
+      - CORE_PEER_LOCALMSPID=TourismAuthorityMSP
+      - CORE_OPERATIONS_LISTENADDRESS=peer0.tourismauthority.com:9444
+      - CORE_METRICS_PROVIDER=prometheus
+      - CHAINCODE_AS_A_SERVICE_BUILDER_CONFIG={"peername":"peer0org1"}
+      - CORE_CHAINCODE_EXECUTETIMEOUT=300s
+    volumes:
+      - ../config/crypto-config/peerOrganizations/tourismauthority.com/peers/peer0.tourismauthority.com/msp:/etc/hyperledger/fabric/msp
+      - ../config/crypto-config/peerOrganizations/tourismauthority.com/peers/peer0.tourismauthority.com/tls:/etc/hyperledger/fabric/tls
+      - peer0.tourismauthority.com:/var/hyperledger/production
+    ports:
+      - 7051:7051
+      - 9444:9444
+    networks:
+      - tourist-safety
+
+  peer0.securityngo.com:
+    container_name: peer0.securityngo.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer0.securityngo.com
+      - CORE_PEER_ADDRESS=peer0.securityngo.com:9051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:9051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.securityngo.com:9052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:9052
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.securityngo.com:9051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.securityngo.com:9051
+      - CORE_PEER_LOCALMSPID=SecurityNGOMSP
+      - CORE_OPERATIONS_LISTENADDRESS=peer0.securityngo.com:9445
+      - CORE_METRICS_PROVIDER=prometheus
+      - CHAINCODE_AS_A_SERVICE_BUILDER_CONFIG={"peername":"peer0org2"}
+      - CORE_CHAINCODE_EXECUTETIMEOUT=300s
+    volumes:
+      - ../config/crypto-config/peerOrganizations/securityngo.com/peers/peer0.securityngo.com/msp:/etc/hyperledger/fabric/msp
+      - ../config/crypto-config/peerOrganizations/securityngo.com/peers/peer0.securityngo.com/tls:/etc/hyperledger/fabric/tls
+      - peer0.securityngo.com:/var/hyperledger/production
+    ports:
+      - 9051:9051
+      - 9445:9445
+    networks:
+      - tourist-safety
+
+  cli:
+    container_name: cli
+    image: hyperledger/fabric-tools:latest
+    tty: true
+    stdin_open: true
+    environment:
+      - GOPATH=/opt/gopath
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - FABRIC_LOGGING_SPEC=INFO
+      - CORE_PEER_ID=cli
+      - CORE_PEER_ADDRESS=peer0.tourismauthority.com:7051
+      - CORE_PEER_LOCALMSPID=TourismAuthorityMSP
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/tourismauthority.com/peers/peer0.tourismauthority.com/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/tourismauthority.com/peers/peer0.tourismauthority.com/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/tourismauthority.com/peers/peer0.tourismauthority.com/tls/ca.crt
+      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/tourismauthority.com/users/Admin@tourismauthority.com/msp
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: /bin/bash
+    volumes:
+      - /var/run/:/host/var/run/
+      - ../chaincode/:/opt/gopath/src/github.com/chaincode
+      - ../config/crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
+      - ../scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
+    depends_on:
+      - orderer.example.com
+      - peer0.tourismauthority.com
+      - peer0.securityngo.com
+    networks:
+      - tourist-safety
+
+volumes:
+  orderer.example.com:
+  peer0.tourismauthority.com:
+  peer0.securityngo.com:

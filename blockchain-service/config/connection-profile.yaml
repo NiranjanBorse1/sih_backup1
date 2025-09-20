@@ -1,0 +1,77 @@
+name: tourist-safety-network
+version: 1.0.0
+description: Tourist Safety Blockchain Network
+
+channels:
+  safetychannel:
+    orderers:
+      - orderer.example.com
+    peers:
+      peer0.tourismauthority.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+      peer0.securityngo.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+
+organizations:
+  TourismAuthorityMSP:
+    mspid: TourismAuthorityMSP
+    peers:
+      - peer0.tourismauthority.com
+    certificateAuthorities:
+      - ca.tourismauthority.com
+  
+  SecurityNGOMSP:
+    mspid: SecurityNGOMSP
+    peers:
+      - peer0.securityngo.com
+    certificateAuthorities:
+      - ca.securityngo.com
+
+orderers:
+  orderer.example.com:
+    url: grpcs://localhost:7050
+    tlsCACerts:
+      path: crypto-config/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem
+    grpcOptions:
+      ssl-target-name-override: orderer.example.com
+      hostnameOverride: orderer.example.com
+
+peers:
+  peer0.tourismauthority.com:
+    url: grpcs://localhost:7051
+    tlsCACerts:
+      path: crypto-config/peerOrganizations/tourismauthority.com/tlsca/tlsca.tourismauthority.com-cert.pem
+    grpcOptions:
+      ssl-target-name-override: peer0.tourismauthority.com
+      hostnameOverride: peer0.tourismauthority.com
+
+  peer0.securityngo.com:
+    url: grpcs://localhost:9051
+    tlsCACerts:
+      path: crypto-config/peerOrganizations/securityngo.com/tlsca/tlsca.securityngo.com-cert.pem
+    grpcOptions:
+      ssl-target-name-override: peer0.securityngo.com
+      hostnameOverride: peer0.securityngo.com
+
+certificateAuthorities:
+  ca.tourismauthority.com:
+    url: https://localhost:7054
+    caName: ca.tourismauthority.com
+    tlsCACerts:
+      path: crypto-config/peerOrganizations/tourismauthority.com/ca/ca.tourismauthority.com-cert.pem
+    httpOptions:
+      verify: false
+
+  ca.securityngo.com:
+    url: https://localhost:8054
+    caName: ca.securityngo.com
+    tlsCACerts:
+      path: crypto-config/peerOrganizations/securityngo.com/ca/ca.securityngo.com-cert.pem
+    httpOptions:
+      verify: false

@@ -63,11 +63,12 @@
     </div>
 
     <script>
-        let map, userMarker, infoWindow, placesService;
-        let userLocation = null;
-        let userInfo = {};
-        let serviceMarkers = [];
-        let geofencePolygon = null;
+    let map, userMarker, infoWindow, placesService;
+    let userLocation = null;
+    let userInfo = {};
+    let serviceMarkers = [];
+    let geofencePolygon = null;
+    let persistedPolygons = [];
 
         function initApp() {
             map = new google.maps.Map(document.getElementById('map'), { center: { lat: 18.5204, lng: 73.8567 }, zoom: 14, mapTypeControl: false, streetViewControl: false });
@@ -105,7 +106,7 @@
         document.getElementById('sos-btn').addEventListener('click', () => {
             if (confirm("CONFIRM EMERGENCY: This will immediately notify authorities of your location. Are you sure?")) {
                 alert("SOS Alert Sent! Authorities have been notified. Stay in a safe location if possible.");
-                fetch('http://127.0.0.1:5003/sos', {
+                fetch('http://127.0.0.1:3002/alerts/sos', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ user: userInfo, location: userLocation })
@@ -118,23 +119,28 @@
                 navigator.geolocation.getCurrentPosition(pos => {
                     userLocation = { lat: pos.coords.latitude, lng: pos.coords.longitude };
                     if(userMarker) userMarker.setPosition(userLocation);
-                    fetch('http://127.0.0.1:5003/check_location', {
+                    fetch('http://127.0.0.1:3002/geofence/check', {
                         method: 'POST', headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify({ ...userInfo, location: userLocation })
-                    });
+                        body: JSON.stringify({ touristId: userInfo.digitalId, coords: { lat: userLocation.lat, lng: userLocation.lng } })
+                    }).catch(()=>{});
                 });
             }, 10000);
         }
 
         async function fetchAndDrawGeofence() {
             try {
-                const response = await fetch('http://127.0.0.1:5003/get_fence');
+                const response = await fetch('http://127.0.0.1:3002/geofence/all');
                 const data = await response.json();
-                if (data.coordinates && data.coordinates.length > 0) {
-                    if (geofencePolygon) geofencePolygon.setMap(null);
-                    geofencePolygon = new google.maps.Polygon({ paths: data.coordinates, strokeColor: "#FF0000", strokeOpacity: 0.8, strokeWeight: 2, fillColor: "#FF0000", fillOpacity: 0.25 });
-                    geofencePolygon.setMap(map);
-                }
+                const geofences = data?.data?.geofences || [];
+                // Clear existing persisted polygons
+                persistedPolygons.forEach(p => p.setMap(null));
+                persistedPolygons = [];
+                geofences.forEach(g => {
+                    const coords = (g.polygon.coordinates[0] || []).map(([lng,lat]) => ({ lat, lng }));
+                    const poly = new google.maps.Polygon({ paths: coords, strokeColor: "#FF0000", strokeOpacity: 0.8, strokeWeight: 2, fillColor: "#FF0000", fillOpacity: 0.25 });
+                    poly.setMap(map);
+                    persistedPolygons.push(poly);
+                });
             } catch (error) {
                 console.error("Could not fetch geofence:", error);
             }
@@ -203,7 +209,22 @@
         
         const createStatusCard = (title, message, success) => { document.getElementById('statusContainer').insertAdjacentHTML('beforeend', `<div class="p-3 rounded-lg ${success ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}"><p class="font-bold">${title}</p><p class="text-sm">${message}</p></div>`); };
         const callAIService = (data) => fetch('http://127.0.0.1:5001/analyze', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)}).then(res => res.json()).then(result => createStatusCard('AI Analysis', `${result.message} (Risk: ${result.riskScore})`, result.riskScore < 50));
-        const callBlockchainService = (data) => fetch('http://127.0.0.1:5002/register', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)}).then(res => res.json()).then(result => createStatusCard('Blockchain Registration', `TxID: ${result.transactionId.substring(0,20)}...`, true));
+        const callBlockchainService = async (data) => {
+            try {
+                const payload = {
+                    name: data.name,
+                    nationality: 'UNKNOWN',
+                    phoneNumber: data.emergencyContact?.phone || '',
+                    emergencyContact: data.emergencyContact?.phone || ''
+                };
+                const res = await fetch('http://127.0.0.1:3001/blockchain/registerDeID', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                const result = await res.json();
+                const txId = (result?.data?.touristId || result?.data?.message || 'registered').toString();
+                createStatusCard('Blockchain Registration', `ID: ${txId.substring(0,20)}...`, true);
+            } catch (e) {
+                createStatusCard('Blockchain Registration', 'Failed to contact blockchain-service', false);
+            }
+        };
     </script>
 </body>
 </html>

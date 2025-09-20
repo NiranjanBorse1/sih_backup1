@@ -1,0 +1,56 @@
+{
+  "name": "blockchain-service",
+  "version": "1.0.0",
+  "description": "Blockchain service for Tourist Digital Identity (DeID) and Audit Trail using Hyperledger Fabric",
+  "main": "api/server.js",
+  "scripts": {
+    "start": "node api/server.js",
+    "dev": "nodemon api/server.js",
+    "test": "jest",
+    "network:up": "cd network && powershell -ExecutionPolicy Bypass -File .\\start-network.ps1",
+    "network:down": "cd network && powershell -ExecutionPolicy Bypass -File .\\stop-network.ps1",
+    "deploy:chaincode": "cd scripts && powershell -ExecutionPolicy Bypass -File .\\deploy-chaincode.ps1",
+    "install:chaincode": "cd scripts && powershell -ExecutionPolicy Bypass -File .\\install-chaincode.ps1",
+    "network:up:bash": "cd network && bash start-network.sh",
+    "network:down:bash": "cd network && bash stop-network.sh",
+    "demo": "node scripts/demo.js",
+    "integration-test": "node tests/integration.js",
+    "deploy:chaincode:bash": "cd scripts && bash deploy-chaincode.sh"
+  },
+  "keywords": [
+    "blockchain",
+    "hyperledger-fabric",
+    "tourist-safety",
+    "digital-identity",
+    "audit-trail",
+    "sih2025"
+  ],
+  "author": "Team Visioneers",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "fabric-ca-client": "^2.2.19",
+    "fabric-network": "^2.2.19",
+    "helmet": "^7.1.0",
+    "joi": "^17.11.0",
+    "moment": "^2.29.4",
+  "swagger-jsdoc": "^6.2.8",
+  "swagger-ui-express": "^5.0.1",
+  "js-yaml": "^4.1.0",
+    "uuid": "^9.0.1",
+    "winston": "^3.11.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.8",
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.2",
+    "supertest": "^6.3.3"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  }
+}

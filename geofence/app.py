@@ -4,6 +4,7 @@ from shapely.geometry import Point, Polygon
 import requests
 import datetime
 import uuid
+import os
 
 app = Flask(__name__)
 CORS(app)
@@ -15,8 +16,11 @@ GEOFENCE_COORDS = []
 # States: 'new', 'acknowledged', 'resolved'
 ACTIVE_ALERTS = {}
 
-BLOCKCHAIN_LOG_URL = "http://127.0.0.1:5002/add_log"
-AI_STATUS_UPDATE_URL = "http://127.0.0.1:5001/update_tourist_status"
+BLOCKCHAIN_API_BASE = os.environ.get("BLOCKCHAIN_API_BASE", "http://127.0.0.1:3001")
+AI_ENGINE_BASE = os.environ.get("AI_ENGINE_BASE", "http://127.0.0.1:5001")
+
+BLOCKCHAIN_LOG_URL = f"{BLOCKCHAIN_API_BASE}/blockchain/logIncident"
+AI_STATUS_UPDATE_URL = f"{AI_ENGINE_BASE}/update_tourist_status"
 
 def update_tourist_status_in_ai_engine(user_id, status):
     """Helper function to call the AI engine."""
@@ -66,8 +70,25 @@ def check_location():
         }
         ACTIVE_ALERTS[alert_id] = alert
         
-        # Log to blockchain and update AI engine status
-        requests.post(BLOCKCHAIN_LOG_URL, json={'event': 'GEOFENCE_BREACH', 'details': alert})
+        # Log incident to blockchain-service and update AI engine status
+        try:
+            incident = {
+                'touristId': user_info['digitalId'],
+                'eventType': 'breach',
+                'location': {
+                    'latitude': location['lat'],
+                    'longitude': location['lng']
+                },
+                'severity': 'high',
+                'description': alert['message'],
+                'reportedBy': 'geofence-system',
+                'metadata': {
+                    'alertId': alert_id
+                }
+            }
+            requests.post(BLOCKCHAIN_LOG_URL, json=incident, timeout=2)
+        except requests.exceptions.RequestException as e:
+            print(f"⚠️ Could not log incident to blockchain-service: {e}")
         update_tourist_status_in_ai_engine(user_info['digitalId'], 'breach')
         
         return jsonify({'status': 'Breach', 'message': alert['message']})
@@ -90,7 +111,24 @@ def receive_sos():
     }
     ACTIVE_ALERTS[alert_id] = alert
     
-    requests.post(BLOCKCHAIN_LOG_URL, json={'event': 'SOS_ALERT', 'details': alert})
+    try:
+        incident = {
+            'touristId': (data.get('user') or {}).get('digitalId'),
+            'eventType': 'sos',
+            'location': {
+                'latitude': (data.get('location') or {}).get('lat'),
+                'longitude': (data.get('location') or {}).get('lng')
+            },
+            'severity': 'critical',
+            'description': alert['message'],
+            'reportedBy': 'tourist',
+            'metadata': {
+                'alertId': alert_id
+            }
+        }
+        requests.post(BLOCKCHAIN_LOG_URL, json=incident, timeout=2)
+    except requests.exceptions.RequestException as e:
+        print(f"⚠️ Could not log SOS to blockchain-service: {e}")
     update_tourist_status_in_ai_engine(data.get('user', {}).get('digitalId'), 'emergency')
 
     return jsonify({'message': 'SOS alert received and logged.'})

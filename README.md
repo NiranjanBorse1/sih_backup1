@@ -31,19 +31,19 @@ cd ai_engine
 pip install -r requirements.txt
 python app.py
 
-Start the Blockchain Service (Port 5002)
+Start the Blockchain Service (Port 3001)
 
 # In terminal 2:
-cd blockchain
-pip install -r requirements.txt
-python app.py
+cd blockchain-service
+npm install
+FORCE_DEMO=true PORT=3001 node api/server.js
 
-Start the Geofence Service (Port 5003)
+Start the Geofence Backend (Port 3002)
 
 # In terminal 3:
-cd geofence
-pip install -r requirements.txt
-python app.py
+cd geofence-backend
+npm install
+npm run dev
 
 Note: Keep all three terminals running simultaneously.
 
@@ -55,6 +55,12 @@ Navigate to the frontend folder in your file explorer.
 Open tourist_app.html to launch the tourist portal.
 
 Open authority_dashboard.html to launch the monitoring dashboard.
+
+Geofence Backend exposes:
+- POST `/geofence/create` to persist a polygon (GeoJSON)
+- GET `/geofence/all` to fetch polygons for the map
+- POST `/geofence/check` to stream live user locations
+- GET `/geofence/breaches` and PATCH `/geofence/breaches/:id` for alerts workflow
 
 ✅ Usage
 Once all services are running, you can use the Tourist App. Fill in your details, get your location, and click "Verify" to see the app communicate with the backend services in real-time. The Authority Dashboard uses mock data to demonstrate its functionality.

@@ -6,11 +6,11 @@
     <title>Authority Dashboard - Command Center</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- 
-      IMPORTANT: Replace YOUR_API_KEY_HERE with your actual Google Maps API key.
-      The callback function is now correctly named 'initDashboard'.
-    -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC6crVsRPttlbmx8JnxO6pvr3ifvQI7n5c&libraries=drawing&callback=initDashboard" async defer></script>
+        <!-- 
+            IMPORTANT: Replace YOUR_API_KEY_HERE with your actual Google Maps API key.
+            The Maps script is loaded after the main dashboard script so the
+            global callback `initDashboard` is available when the API calls it.
+        -->
     <style>
         body { font-family: 'Inter', sans-serif; }
         #map { height: 550px; border-radius: 1rem; }
@@ -61,13 +61,23 @@
                         <p class="text-gray-500 text-center pt-16">Click Refresh to load audit trail.</p>
                      </div>
                 </div>
+                <div class="bg-white p-6 rounded-2xl shadow">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold text-gray-800">Audit Chain</h3>
+                        <button id="refreshAuditBtn" class="text-sm text-indigo-600 font-semibold">Refresh</button>
+                    </div>
+                    <div id="auditChainContainer" class="space-y-2 h-48 overflow-y-auto">
+                        <p class="text-gray-500 text-center pt-16">Immutable hash chain preview.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        let map, drawingManager, currentPolygon, infoWindow;
-        let touristMarkers = {};
+    let map, drawingManager, currentPolygon, infoWindow;
+    let touristMarkers = {};
+    let persistedPolygons = [];
         let activeAlerts = {};
 
         // This function name now matches the callback in the script tag
@@ -84,23 +94,58 @@
             document.getElementById('drawBtn').addEventListener('click', () => drawingManager.setDrawingMode('polygon'));
             document.getElementById('clearBtn').addEventListener('click', clearGeofence);
             document.getElementById('refreshLogBtn').addEventListener('click', fetchIncidentLog);
+            document.getElementById('refreshAuditBtn').addEventListener('click', fetchAuditChain);
 
             // Start polling for data
             setInterval(fetchAlerts, 3000);
             setInterval(updateTouristMarkers, 5000);
             // Fetch initial data once
             fetchIncidentLog();
+            // Draw any persisted geofences so they appear after reload
+            fetchAndDrawGeofences();
         }
+
+        // Ensure the dashboard init function is globally available for the Google Maps callback
+        window.initDashboard = initDashboard;
 
         function handlePolygonComplete(polygon) {
             if (currentPolygon) currentPolygon.setMap(null);
             currentPolygon = polygon;
             const coordinates = polygon.getPath().getArray().map(p => ({ lat: p.lat(), lng: p.lng() }));
-            fetch('http://127.0.0.1:5003/set_fence', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ coordinates }) });
+            // Convert drawn polygon to GeoJSON for geofence-backend
+            const coords = coordinates.map(c => [c.lng, c.lat]);
+            if (coords.length > 0 && (coords[0][0] !== coords[coords.length-1][0] || coords[0][1] !== coords[coords.length-1][1])) {
+                coords.push(coords[0]);
+            }
+            const geojsonPolygon = { type: 'Polygon', coordinates: [coords] };
+            // Create geofence and then re-fetch to render persisted polygon
+            fetch('http://127.0.0.1:3002/geofence/create', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ name: 'Restricted Zone', polygon: geojsonPolygon, zoneType: 'danger', severity: 'high' }) })
+                .then(r => r.json()).then(() => fetchAndDrawGeofences()).catch(e => console.error('Failed to create geofence:', e));
             drawingManager.setDrawingMode(null);
         }
 
         function clearGeofence() { if (currentPolygon) { currentPolygon.setMap(null); currentPolygon = null; }}
+
+        async function fetchAndDrawGeofences() {
+            try {
+                const resp = await fetch('http://127.0.0.1:3002/geofence/all');
+                const data = await resp.json();
+                const geofences = data?.data?.geofences || [];
+                // Clear any existing drawn persisted polygons
+                persistedPolygons.forEach(p => p.setMap(null));
+                persistedPolygons = [];
+
+                // Draw all persisted geofences
+                geofences.forEach(g => {
+                    const coords = (g.polygon.coordinates[0] || []).map(([lng,lat]) => ({ lat, lng }));
+                    const poly = new google.maps.Polygon({ paths: coords, strokeColor: "#FF0000", strokeOpacity: 0.8, strokeWeight: 2, fillColor: "#FF0000", fillOpacity: 0.25 });
+                    poly.setMap(map);
+                    persistedPolygons.push(poly);
+                });
+            } catch (err) {
+                console.error('Failed to fetch persisted geofences:', err);
+            }
+        }
 
         async function updateTouristMarkers() {
             try {
@@ -153,9 +198,9 @@
 
         async function fetchAlerts() {
             try {
-                const response = await fetch('http://127.0.0.1:5003/get_alerts');
+                const response = await fetch('http://127.0.0.1:3002/geofence/breaches');
                 const data = await response.json();
-                const activeAlertsFromServer = data.alerts || [];
+                const activeAlertsFromServer = (data.data?.breachEvents || []).filter(a => a.status !== 'resolved');
                 document.getElementById('metric-emergencies').textContent = activeAlertsFromServer.length;
 
                 const container = document.getElementById('alertContainer');
@@ -208,18 +253,12 @@
         }
         
         async function acknowledgeAlert(alertId) {
-            await fetch('http://127.0.0.1:5003/update_alert_status', {
-                method: 'POST', headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ alertId: alertId, status: 'acknowledged' })
-            });
+            await fetch(`http://127.0.0.1:3002/geofence/breaches/${alertId}`, { method: 'PATCH', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ status: 'acknowledged' }) });
             fetchAlerts();
         }
         
         async function resolveAlert(alertId) {
-             await fetch('http://127.0.0.1:5003/update_alert_status', {
-                method: 'POST', headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ alertId: alertId, status: 'resolved' })
-            });
+             await fetch(`http://127.0.0.1:3002/geofence/breaches/${alertId}`, { method: 'PATCH', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ status: 'resolved' }) });
             fetchAlerts();
         }
 
@@ -227,22 +266,26 @@
             try {
                 const container = document.getElementById('incidentLogContainer');
                 container.innerHTML = '<p class="text-center">Loading...</p>';
-                const response = await fetch('http://127.0.0.1:5002/chain');
+                // Try to fetch incidents by a broad region; demo service returns mock data when FORCE_DEMO enabled
+                const region = encodeURIComponent(JSON.stringify({ bounds: { north: 90, south: -90, east: 180, west: -180 } }));
+                const response = await fetch(`http://127.0.0.1:3001/blockchain/incidents?region=${region}`);
                 const data = await response.json();
-                document.getElementById('metric-incidents').textContent = data.chain.length - 1;
+                const incidents = Array.isArray(data.data) ? data.data : [];
+                document.getElementById('metric-incidents').textContent = incidents.length;
                 container.innerHTML = '';
-                if (data.chain.length <= 1) {
+                if (incidents.length === 0) {
                     container.innerHTML = '<p class="text-gray-500 text-center pt-16">No incidents recorded yet.</p>';
                     return;
                 }
-                data.chain.slice(1).reverse().forEach(block => {
-                    const time = new Date(block.timestamp).toLocaleTimeString();
-                    const userName = block.data?.user?.name || block.data?.name || 'System';
+                incidents.slice(0, 50).forEach(inc => {
+                    const time = new Date(inc.timestamp || Date.now()).toLocaleTimeString();
+                    const userName = inc.touristId || 'Unknown';
+                    const txId = inc.incidentId || inc.txId || 'N/A';
                     const logItem = `
                         <div class="incident-log-item pb-2">
-                            <p class="font-semibold text-sm text-gray-800">${block.event_type} <span class="text-xs text-gray-500 font-normal float-right">${time}</span></p>
-                            <p class="text-xs text-gray-600">User: ${userName}</p>
-                            <p class="text-xs text-gray-500 truncate" title="${block.hash}">TxID: ${block.hash}</p>
+                            <p class="font-semibold text-sm text-gray-800">${(inc.eventType || 'incident').toUpperCase()} <span class="text-xs text-gray-500 font-normal float-right">${time}</span></p>
+                            <p class="text-xs text-gray-600">Tourist: ${userName}</p>
+                            <p class="text-xs text-gray-500 truncate" title="${txId}">ID: ${txId}</p>
                         </div>`;
                     container.insertAdjacentHTML('beforeend', logItem);
                 });
@@ -250,7 +293,40 @@
                 console.error("Failed to fetch incident log:", error);
             }
         }
+
+        async function fetchAuditChain() {
+            try {
+                const container = document.getElementById('auditChainContainer');
+                container.innerHTML = '<p class="text-center">Loading...</p>';
+                const response = await fetch('http://127.0.0.1:3001/audit/chain');
+                const data = await response.json();
+                const chain = data.chain || [];
+                container.innerHTML = '';
+                if (chain.length === 0) {
+                    container.innerHTML = '<p class="text-gray-500 text-center pt-16">No audit entries.</p>';
+                    return;
+                }
+                chain.slice(-50).reverse().forEach(block => {
+                    const item = `
+                        <div class="incident-log-item pb-2">
+                            <p class="font-semibold text-sm text-gray-800">${block.type} <span class="text-xs text-gray-500 font-normal float-right">#${block.index}</span></p>
+                            <p class="text-xs text-gray-600 truncate">Hash: ${block.hash}</p>
+                            <p class="text-xs text-gray-400 truncate">Prev: ${block.prevHash}</p>
+                        </div>`;
+                    container.insertAdjacentHTML('beforeend', item);
+                });
+
+                // Verify chain and show toast-like status in title
+                const verify = await fetch('http://127.0.0.1:3001/audit/verify').then(r => r.json());
+                const valid = verify?.result?.valid;
+                document.querySelector('h3.text-lg.font-bold.text-gray-800').textContent = `Audit Chain (Demo)${valid ? ' ✅' : ' ❌'}`;
+            } catch (e) {
+                console.error('Failed to fetch audit chain:', e);
+            }
+        }
     </script>
+    <!-- Load Google Maps after defining initDashboard so the callback resolves -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC6crVsRPttlbmx8JnxO6pvr3ifvQI7n5c&libraries=drawing&callback=initDashboard" async defer></script>
 </body>
 </html>
 

@@ -1,0 +1,181 @@
+[
+  {
+    "id": "1758280672872",
+    "name": "Test Danger Zone",
+    "description": "Test geofence for API testing",
+    "polygon": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            77.5946,
+            12.9716
+          ],
+          [
+            77.5956,
+            12.9716
+          ],
+          [
+            77.5956,
+            12.9726
+          ],
+          [
+            77.5946,
+            12.9726
+          ],
+          [
+            77.5946,
+            12.9716
+          ]
+        ]
+      ]
+    },
+    "zoneType": "danger",
+    "severity": "high",
+    "createdBy": "test-admin",
+    "active": true,
+    "createdAt": "2025-09-19T11:17:52.872Z"
+  },
+  {
+    "id": "1758288800545",
+    "name": "Test Danger Zone",
+    "description": "Test geofence for API testing",
+    "polygon": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            77.5946,
+            12.9716
+          ],
+          [
+            77.5956,
+            12.9716
+          ],
+          [
+            77.5956,
+            12.9726
+          ],
+          [
+            77.5946,
+            12.9726
+          ],
+          [
+            77.5946,
+            12.9716
+          ]
+        ]
+      ]
+    },
+    "zoneType": "danger",
+    "severity": "high",
+    "createdBy": "test-admin",
+    "active": true,
+    "createdAt": "2025-09-19T13:33:20.545Z"
+  },
+  {
+    "id": "1758288947442",
+    "name": "Test Danger Zone",
+    "description": "Test geofence for API testing",
+    "polygon": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            77.5946,
+            12.9716
+          ],
+          [
+            77.5956,
+            12.9716
+          ],
+          [
+            77.5956,
+            12.9726
+          ],
+          [
+            77.5946,
+            12.9726
+          ],
+          [
+            77.5946,
+            12.9716
+          ]
+        ]
+      ]
+    },
+    "zoneType": "danger",
+    "severity": "high",
+    "createdBy": "test-admin",
+    "active": true,
+    "createdAt": "2025-09-19T13:35:47.442Z"
+  },
+  {
+    "id": "1758327991969",
+    "name": "Restricted Zone",
+    "polygon": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            73.83557740083303,
+            18.526881097782297
+          ],
+          [
+            73.84948197236623,
+            18.53713498344829
+          ],
+          [
+            73.84982529512014,
+            18.519068200658978
+          ],
+          [
+            73.83557740083303,
+            18.526881097782297
+          ]
+        ]
+      ]
+    },
+    "zoneType": "danger",
+    "severity": "high",
+    "createdBy": "system",
+    "active": true,
+    "createdAt": "2025-09-20T00:26:31.969Z"
+  },
+  {
+    "id": "1758328339342",
+    "name": "Restricted Zone",
+    "polygon": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            73.82792955217491,
+            18.529352178407542
+          ],
+          [
+            73.8330793934835,
+            18.52316708700571
+          ],
+          [
+            73.84646898088585,
+            18.533909470989354
+          ],
+          [
+            73.83462434587608,
+            18.535048775148063
+          ],
+          [
+            73.82792955217491,
+            18.529352178407542
+          ]
+        ]
+      ]
+    },
+    "zoneType": "danger",
+    "severity": "high",
+    "createdBy": "system",
+    "active": true,
+    "createdAt": "2025-09-20T00:32:19.342Z"
+  }
+]

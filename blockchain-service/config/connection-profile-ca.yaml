@@ -1,0 +1,22 @@
+certificateAuthorities:
+  ca.tourismauthority.com:
+    url: https://localhost:7054
+    caName: ca.tourismauthority.com
+    tlsCACerts:
+      path: /etc/hyperledger/config/crypto-config/peerOrganizations/tourismauthority.com/ca/ca.tourismauthority.com-cert.pem
+    httpOptions:
+      verify: false
+    registrar:
+      - enrollId: admin
+        enrollSecret: adminpw
+
+  ca.securityngo.com:
+    url: https://localhost:8054
+    caName: ca.securityngo.com
+    tlsCACerts:
+      path: /etc/hyperledger/config/crypto-config/peerOrganizations/securityngo.com/ca/ca.securityngo.com-cert.pem
+    httpOptions:
+      verify: false
+    registrar:
+      - enrollId: admin
+        enrollSecret: adminpw

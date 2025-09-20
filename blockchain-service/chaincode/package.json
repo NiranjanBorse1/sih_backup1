@@ -1,0 +1,22 @@
+{
+  "name": "tourist-safety-chaincode",
+  "version": "1.0.0",
+  "description": "Smart contracts for Tourist Safety System - DeID and Incident Logging",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --recursive"
+  },
+  "dependencies": {
+    "fabric-contract-api": "^2.5.4",
+    "fabric-shim": "^2.5.4"
+  },
+  "devDependencies": {
+    "mocha": "^10.2.0",
+    "chai": "^4.3.10"
+  },
+  "author": "Team Visioneers",
+  "license": "MIT",
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
