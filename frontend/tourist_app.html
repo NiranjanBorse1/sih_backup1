@@ -66,6 +66,8 @@
     let map, userMarker, infoWindow, placesService;
     let userLocation = null;
     let userInfo = {};
+    // Buffer of recent GPS points (most recent last)
+    let recentPositions = [];
     let serviceMarkers = [];
     let geofencePolygon = null;
     let persistedPolygons = [];
@@ -78,6 +80,9 @@
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(pos => {
                     userLocation = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+                    // push into recent positions buffer
+                    recentPositions.push({ latitude: userLocation.lat, longitude: userLocation.lng, timestamp: Math.floor(Date.now() / 1000) });
+                    if (recentPositions.length > 10) recentPositions.shift();
                     document.getElementById('locationStatus').textContent = '✅ Location ready.';
                     userMarker = new google.maps.Marker({ position: userLocation, map: map, title: "Your Location", icon: { path: google.maps.SymbolPath.CIRCLE, scale: 8, fillColor: "#4285F4", fillOpacity: 1, strokeColor: "white", strokeWeight: 2 } });
                     map.setCenter(userLocation);
@@ -120,6 +125,10 @@
             setInterval(() => {
                 navigator.geolocation.getCurrentPosition(pos => {
                     userLocation = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+                    // push into recent positions buffer
+                    recentPositions.push({ latitude: userLocation.lat, longitude: userLocation.lng, timestamp: Math.floor(Date.now() / 1000) });
+                    if (recentPositions.length > 10) recentPositions.shift();
+
                     if(userMarker) userMarker.setPosition(userLocation);
                     fetch('http://127.0.0.1:3002/geofence/check', {
                         method: 'POST', headers: {'Content-Type': 'application/json'},
@@ -154,15 +163,15 @@
                 alert("Cannot search for nearby places until your location is determined.");
                 return;
             }
-            
+            // Use numeric radius and string type per API docs
             const request = {
                 location: userLocation,
-                radius: '5000', // search within a 5km radius
-                type: [type]
+                radius: 5000, // 5km radius
+                type: type // string, not array
             };
-
+            // Google recommends using Place API, but PlacesService still works for legacy keys
             placesService.nearbySearch(request, (results, status) => {
-                clearServiceMarkers(); // Clear old markers before showing new ones
+                clearServiceMarkers();
                 if (status === google.maps.places.PlacesServiceStatus.OK && results) {
                     for (let i = 0; i < results.length; i++) {
                         createMarkerForPlace(results[i], type);
@@ -210,7 +219,40 @@
         }
         
         const createStatusCard = (title, message, success) => { document.getElementById('statusContainer').insertAdjacentHTML('beforeend', `<div class="p-3 rounded-lg ${success ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}"><p class="font-bold">${title}</p><p class="text-sm">${message}</p></div>`); };
-        const callAIService = (data) => fetch('http://127.0.0.1:5001/analyze', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)}).then(res => res.json()).then(result => createStatusCard('AI Analysis', `${result.message} (Risk: ${result.riskScore})`, result.riskScore < 50));
+        const callAIService = async (data) => {
+            try {
+                // Build payload matching FastAPI's expected shape
+                const payload = { tourist_id: data.digitalId || data.id || 'unknown' };
+                if (recentPositions.length >= 2) {
+                    // send up to last 5 recent positions
+                    payload.recent_coordinates = recentPositions.slice(-5).map(p => ({ latitude: p.latitude, longitude: p.longitude, timestamp: p.timestamp }));
+                } else {
+                    // fallback synthetic pair
+                    const now = Math.floor(Date.now() / 1000);
+                    payload.recent_coordinates = [
+                        { latitude: data.location.lat - 0.0001, longitude: data.location.lng - 0.0001, timestamp: now - 60 },
+                        { latitude: data.location.lat, longitude: data.location.lng, timestamp: now }
+                    ];
+                }
+
+                const res = await fetch('http://127.0.0.1:8001/ai/analyze', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                const result = await res.json();
+
+                if (!res.ok) {
+                    const errorMsg = result?.detail || result?.message || 'AI analysis failed';
+                    createStatusCard('AI Analysis', `${errorMsg}`, false);
+                    return;
+                }
+
+                // FastAPI returns { anomaly, risk_score, explanation }
+                const risk = (typeof result.risk_score === 'number') ? result.risk_score : null;
+                const explanation = result.explanation || (result.detail || 'No explanation');
+                const success = (risk === null) ? false : (risk < 0.5);
+                createStatusCard('AI Analysis', `${explanation} (Risk: ${risk !== null ? (risk.toFixed ? risk.toFixed(3) : risk) : 'N/A'})`, success);
+            } catch (e) {
+                createStatusCard('AI Analysis', 'Failed to contact AI Engine', false);
+            }
+        };
         const callBlockchainService = async (data) => {
             try {
                 const payload = {

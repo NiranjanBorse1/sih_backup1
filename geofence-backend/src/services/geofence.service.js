@@ -198,6 +198,20 @@ class GeofenceService {
       throw error;
     }
   }
+
+  /**
+   * Delete all persisted geofences (irreversible in this simple file-backed store)
+   * Use with caution; this removes all entries from the geofences JSON file.
+   */
+  async deleteAllGeofences() {
+    try {
+      // Overwrite the file with an empty array
+      fs.writeFileSync(DATA_FILE, JSON.stringify([], null, 2));
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  }
   
   /**
    * Check if a point is inside any active geofence

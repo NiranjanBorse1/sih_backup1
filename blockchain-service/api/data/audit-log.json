@@ -362,5 +362,1369 @@
     },
     "prevHash": "7892227a350ec7f94e3b1cd983f5cb57c0f102840cb94b0cce12d50ae9b1f9f8",
     "hash": "2d5afa90e208067993d654b273159ca2f818cad45d83d1da4134b622d4eab49b"
+  },
+  {
+    "index": 20,
+    "timestamp": "2025-09-20T00:52:14.000Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "2d5afa90e208067993d654b273159ca2f818cad45d83d1da4134b622d4eab49b",
+    "hash": "5ceec60f07151f95cf5ac80806366f001253c18d392f9777da1b28ebff8f2041"
+  },
+  {
+    "index": 21,
+    "timestamp": "2025-09-20T00:52:16.897Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "5ceec60f07151f95cf5ac80806366f001253c18d392f9777da1b28ebff8f2041",
+    "hash": "4c96b722eaf8aeed9bf3391472ee7ed6073268e8c88bfab7a2a1faec16aadfc0"
+  },
+  {
+    "index": 22,
+    "timestamp": "2025-09-20T00:53:09.016Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "4c96b722eaf8aeed9bf3391472ee7ed6073268e8c88bfab7a2a1faec16aadfc0",
+    "hash": "ce12ea0627cb51302f91aa8bc5065ce98a1679846ab80be2ae003efddc0341fa"
+  },
+  {
+    "index": 23,
+    "timestamp": "2025-09-20T00:54:07.708Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "ce12ea0627cb51302f91aa8bc5065ce98a1679846ab80be2ae003efddc0341fa",
+    "hash": "bcc87031ae8b74fc715d5afbe1365f5bfc1db5cab988dfc9388ffc32cd8c6ebe"
+  },
+  {
+    "index": 24,
+    "timestamp": "2025-09-20T00:54:09.163Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "bcc87031ae8b74fc715d5afbe1365f5bfc1db5cab988dfc9388ffc32cd8c6ebe",
+    "hash": "4a1620d5fdad7bb922f64d7ea9ccb29c59ff79388ebe54b8fc60232fa83c62e3"
+  },
+  {
+    "index": 25,
+    "timestamp": "2025-09-20T00:54:09.543Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "4a1620d5fdad7bb922f64d7ea9ccb29c59ff79388ebe54b8fc60232fa83c62e3",
+    "hash": "e2ec5119154f89cf4c001ee089ed20f452aabfc719fcb544cc10006c8d9d4851"
+  },
+  {
+    "index": 26,
+    "timestamp": "2025-09-20T00:54:09.883Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "e2ec5119154f89cf4c001ee089ed20f452aabfc719fcb544cc10006c8d9d4851",
+    "hash": "4c46ffe04dcff1874123d0732355ee380c77fb40eddd51b1c61588a480b0941a"
+  },
+  {
+    "index": 27,
+    "timestamp": "2025-09-20T00:54:10.204Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "4c46ffe04dcff1874123d0732355ee380c77fb40eddd51b1c61588a480b0941a",
+    "hash": "66e90661fd9003e0bd18cb768b867e7cdbf490426f6b422b1710a22bd432fc82"
+  },
+  {
+    "index": 28,
+    "timestamp": "2025-09-20T00:54:10.542Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "66e90661fd9003e0bd18cb768b867e7cdbf490426f6b422b1710a22bd432fc82",
+    "hash": "018845b55314ac496b5f3cbc9a04c85c3f40fb678c46e61b35466009bb20fc28"
+  },
+  {
+    "index": 29,
+    "timestamp": "2025-09-20T00:54:10.882Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "018845b55314ac496b5f3cbc9a04c85c3f40fb678c46e61b35466009bb20fc28",
+    "hash": "918a8be841ef6d6acc344793d8e3f05360a6930df6e6b788084c8665a17ad778"
+  },
+  {
+    "index": 30,
+    "timestamp": "2025-09-20T00:54:11.127Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "918a8be841ef6d6acc344793d8e3f05360a6930df6e6b788084c8665a17ad778",
+    "hash": "85cff0b65429779fda7ec2cb588d30dbcdd2a5934ba8378f7d23e4cd85266003"
+  },
+  {
+    "index": 31,
+    "timestamp": "2025-09-20T00:54:22.603Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "85cff0b65429779fda7ec2cb588d30dbcdd2a5934ba8378f7d23e4cd85266003",
+    "hash": "8b1e216bd9cd6cc959c4f4051c89c633846e927c1f7e0712c7b5fd93bbc65c09"
+  },
+  {
+    "index": 32,
+    "timestamp": "2025-09-20T00:54:31.274Z",
+    "type": "REGISTER_DEID",
+    "data": {
+      "request": {
+        "name": "Niranjan Borses",
+        "nationality": "UNKNOWN",
+        "phoneNumber": "08329957610",
+        "emergencyContact": "08329957610"
+      },
+      "response": {
+        "success": true,
+        "touristId": "TST_1758329671273_4CI508",
+        "publicKey": "MOCK_PUBLIC_KEY_1758329671274",
+        "privateKey": "MOCK_PRIVATE_KEY_1758329671274",
+        "message": "Tourist DeID registered successfully (DEMO MODE)"
+      }
+    },
+    "prevHash": "8b1e216bd9cd6cc959c4f4051c89c633846e927c1f7e0712c7b5fd93bbc65c09",
+    "hash": "babe6b8c24ac0e9bee5f8757d213e1ee588dfb012db0216499366de11b736438"
+  },
+  {
+    "index": 33,
+    "timestamp": "2025-09-20T00:54:39.902Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "babe6b8c24ac0e9bee5f8757d213e1ee588dfb012db0216499366de11b736438",
+    "hash": "456357c2b66360c192d85b89773056db99e5eb7b9f9e5eeb0ac8fc40cb68e620"
+  },
+  {
+    "index": 34,
+    "timestamp": "2025-09-20T00:54:46.443Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "456357c2b66360c192d85b89773056db99e5eb7b9f9e5eeb0ac8fc40cb68e620",
+    "hash": "b4b1526b6638c80db362a137bd11f68806b5ab20845c23ba2f78000ecd29082e"
+  },
+  {
+    "index": 35,
+    "timestamp": "2025-09-20T00:54:54.258Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "b4b1526b6638c80db362a137bd11f68806b5ab20845c23ba2f78000ecd29082e",
+    "hash": "5e46f296e26122976f36914c2c97d2062da38b89dd8b52d0263eac6c96141d08"
+  },
+  {
+    "index": 36,
+    "timestamp": "2025-09-20T01:23:52.532Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "5e46f296e26122976f36914c2c97d2062da38b89dd8b52d0263eac6c96141d08",
+    "hash": "4c810e41afeabaf37d7e36ce02c8bd00b00bafe6a8d5237ec6a368b924fc2778"
+  },
+  {
+    "index": 37,
+    "timestamp": "2025-09-20T01:24:11.493Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "4c810e41afeabaf37d7e36ce02c8bd00b00bafe6a8d5237ec6a368b924fc2778",
+    "hash": "353ed4d6fa7dc4230ea009cfea9e9a5c64263dae1be999eb2dbf7054c427b592"
+  },
+  {
+    "index": 38,
+    "timestamp": "2025-09-20T01:24:12.252Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "353ed4d6fa7dc4230ea009cfea9e9a5c64263dae1be999eb2dbf7054c427b592",
+    "hash": "d5ac49096a318bcc6122994f1a610692cc9d80b6b9cca1ac893ed879cf31cf81"
+  },
+  {
+    "index": 39,
+    "timestamp": "2025-09-20T01:24:13.112Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "d5ac49096a318bcc6122994f1a610692cc9d80b6b9cca1ac893ed879cf31cf81",
+    "hash": "43d46ce7330606f7124db8a0f616e7c1971ae224372944150b705c9674b46cd7"
+  },
+  {
+    "index": 40,
+    "timestamp": "2025-09-20T01:24:14.832Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "43d46ce7330606f7124db8a0f616e7c1971ae224372944150b705c9674b46cd7",
+    "hash": "810bf8abe7a2533f32dbf1480e88f480766bd6457112dfb77201a5bac2764494"
+  },
+  {
+    "index": 41,
+    "timestamp": "2025-09-20T01:24:16.053Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "810bf8abe7a2533f32dbf1480e88f480766bd6457112dfb77201a5bac2764494",
+    "hash": "309c1c0be03d478f7d31ad6955efcf11e52d3b3b6cb26ba4dd27a0196f5a816d"
+  },
+  {
+    "index": 42,
+    "timestamp": "2025-09-20T01:24:17.012Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "309c1c0be03d478f7d31ad6955efcf11e52d3b3b6cb26ba4dd27a0196f5a816d",
+    "hash": "299579de45d7b7c0210a070405af0f46f5b14329ab5edfa6ba3b2f7947451254"
+  },
+  {
+    "index": 43,
+    "timestamp": "2025-09-20T01:24:18.553Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "299579de45d7b7c0210a070405af0f46f5b14329ab5edfa6ba3b2f7947451254",
+    "hash": "8115f9264abfe9760c4855136d53b6623e9f553aedbc892d92a705e261b67982"
+  },
+  {
+    "index": 44,
+    "timestamp": "2025-09-20T01:31:32.724Z",
+    "type": "REGISTER_DEID",
+    "data": {
+      "request": {
+        "name": "Niranjan Borses",
+        "nationality": "UNKNOWN",
+        "phoneNumber": "08329957610",
+        "emergencyContact": "08329957610"
+      },
+      "response": {
+        "success": true,
+        "touristId": "TST_1758331892724_DVOZZT",
+        "publicKey": "MOCK_PUBLIC_KEY_1758331892724",
+        "privateKey": "MOCK_PRIVATE_KEY_1758331892724",
+        "message": "Tourist DeID registered successfully (DEMO MODE)"
+      }
+    },
+    "prevHash": "8115f9264abfe9760c4855136d53b6623e9f553aedbc892d92a705e261b67982",
+    "hash": "979afb4c4c525ee42f868d2270ed4ddce1cfebcc812ad8e0abfe80e1c415d674"
+  },
+  {
+    "index": 45,
+    "timestamp": "2025-09-20T01:32:14.057Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "979afb4c4c525ee42f868d2270ed4ddce1cfebcc812ad8e0abfe80e1c415d674",
+    "hash": "287d54c81012c8c35c2ce2aa593f5f1b581e1718c19380e5a1b2752b89ca2950"
+  },
+  {
+    "index": 46,
+    "timestamp": "2025-09-20T01:32:25.619Z",
+    "type": "REGISTER_DEID",
+    "data": {
+      "request": {
+        "name": "Niranjan Borses",
+        "nationality": "UNKNOWN",
+        "phoneNumber": "08329957610",
+        "emergencyContact": "08329957610"
+      },
+      "response": {
+        "success": true,
+        "touristId": "TST_1758331945618_VRSAFD",
+        "publicKey": "MOCK_PUBLIC_KEY_1758331945618",
+        "privateKey": "MOCK_PRIVATE_KEY_1758331945618",
+        "message": "Tourist DeID registered successfully (DEMO MODE)"
+      }
+    },
+    "prevHash": "287d54c81012c8c35c2ce2aa593f5f1b581e1718c19380e5a1b2752b89ca2950",
+    "hash": "7934a455036a465413979538606aa7c5cabecdc5b0afae85c4de851285f5695c"
+  },
+  {
+    "index": 47,
+    "timestamp": "2025-09-20T01:49:04.744Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "7934a455036a465413979538606aa7c5cabecdc5b0afae85c4de851285f5695c",
+    "hash": "5f59259b980be62e919a4a53e5843899156c8cb6b17f81b1f336fbed79850a72"
+  },
+  {
+    "index": 48,
+    "timestamp": "2025-09-20T01:49:08.055Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "5f59259b980be62e919a4a53e5843899156c8cb6b17f81b1f336fbed79850a72",
+    "hash": "787b6aff7d677f5cd19cd0bf03f6a0cf8a5d75945535cc24d4f08b4dee83819e"
+  },
+  {
+    "index": 49,
+    "timestamp": "2025-09-20T01:49:22.858Z",
+    "type": "REGISTER_DEID",
+    "data": {
+      "request": {
+        "name": "Niranjan Borse",
+        "nationality": "UNKNOWN",
+        "phoneNumber": "08329957610",
+        "emergencyContact": "08329957610"
+      },
+      "response": {
+        "success": true,
+        "touristId": "TST_1758332962858_WSF1J7",
+        "publicKey": "MOCK_PUBLIC_KEY_1758332962858",
+        "privateKey": "MOCK_PRIVATE_KEY_1758332962858",
+        "message": "Tourist DeID registered successfully (DEMO MODE)"
+      }
+    },
+    "prevHash": "787b6aff7d677f5cd19cd0bf03f6a0cf8a5d75945535cc24d4f08b4dee83819e",
+    "hash": "65cb8f9e43cd288487e780560bfe181a037f3a53b75124a03635827d089bf146"
+  },
+  {
+    "index": 50,
+    "timestamp": "2025-09-20T01:49:34.289Z",
+    "type": "REGISTER_DEID",
+    "data": {
+      "request": {
+        "name": "Niranjan Borse",
+        "nationality": "UNKNOWN",
+        "phoneNumber": "08329957610",
+        "emergencyContact": "08329957610"
+      },
+      "response": {
+        "success": true,
+        "touristId": "TST_1758332974289_PMXPMQ",
+        "publicKey": "MOCK_PUBLIC_KEY_1758332974289",
+        "privateKey": "MOCK_PRIVATE_KEY_1758332974289",
+        "message": "Tourist DeID registered successfully (DEMO MODE)"
+      }
+    },
+    "prevHash": "65cb8f9e43cd288487e780560bfe181a037f3a53b75124a03635827d089bf146",
+    "hash": "79cfea923826eb6dc099ae4490365f7e2aa9dd8a1f84aee06d99d13fea5f6c6d"
+  },
+  {
+    "index": 51,
+    "timestamp": "2025-09-20T01:49:48.244Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "79cfea923826eb6dc099ae4490365f7e2aa9dd8a1f84aee06d99d13fea5f6c6d",
+    "hash": "991042ca5fa9b2dcb35420e9ca720fc475c02198b5b0e2792894a085bfc79108"
+  },
+  {
+    "index": 52,
+    "timestamp": "2025-09-20T01:54:03.657Z",
+    "type": "REGISTER_DEID",
+    "data": {
+      "request": {
+        "name": "Niranjan Borse",
+        "nationality": "UNKNOWN",
+        "phoneNumber": "08329957610",
+        "emergencyContact": "08329957610"
+      },
+      "response": {
+        "success": true,
+        "touristId": "TST_1758333243656_HM4LY6",
+        "publicKey": "MOCK_PUBLIC_KEY_1758333243656",
+        "privateKey": "MOCK_PRIVATE_KEY_1758333243656",
+        "message": "Tourist DeID registered successfully (DEMO MODE)"
+      }
+    },
+    "prevHash": "991042ca5fa9b2dcb35420e9ca720fc475c02198b5b0e2792894a085bfc79108",
+    "hash": "10dffb90d026521c0a6d228d0a35681158f6f4b5bf0d7297be8d90dd1fa21dfc"
+  },
+  {
+    "index": 53,
+    "timestamp": "2025-09-20T02:00:38.421Z",
+    "type": "REGISTER_DEID",
+    "data": {
+      "request": {
+        "name": "Niranjan Borses",
+        "nationality": "UNKNOWN",
+        "phoneNumber": "08329957610",
+        "emergencyContact": "08329957610"
+      },
+      "response": {
+        "success": true,
+        "touristId": "TST_1758333638421_MYS4T7",
+        "publicKey": "MOCK_PUBLIC_KEY_1758333638421",
+        "privateKey": "MOCK_PRIVATE_KEY_1758333638421",
+        "message": "Tourist DeID registered successfully (DEMO MODE)"
+      }
+    },
+    "prevHash": "10dffb90d026521c0a6d228d0a35681158f6f4b5bf0d7297be8d90dd1fa21dfc",
+    "hash": "3710ada7dcf798d0657e4b5a3927f569e3b96fec94969e78bddcbd4d1b79f6f7"
+  },
+  {
+    "index": 54,
+    "timestamp": "2025-09-20T02:00:52.673Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "3710ada7dcf798d0657e4b5a3927f569e3b96fec94969e78bddcbd4d1b79f6f7",
+    "hash": "4d499afdfd66992eb450b915def569b377d254f6bf1602dfa2a0c3f66b11c5ee"
+  },
+  {
+    "index": 55,
+    "timestamp": "2025-09-20T02:01:03.579Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "4d499afdfd66992eb450b915def569b377d254f6bf1602dfa2a0c3f66b11c5ee",
+    "hash": "9cda3c5333b61f150a33226b5bba6964fd6a2e541cc36f795f15bc1d7c7a22c6"
+  },
+  {
+    "index": 56,
+    "timestamp": "2025-09-20T02:01:03.899Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "9cda3c5333b61f150a33226b5bba6964fd6a2e541cc36f795f15bc1d7c7a22c6",
+    "hash": "e5aa2ef87b4d086f7bc7f68f9dd2cb747aadc478d31f50c6d8043afd241ae9f5"
+  },
+  {
+    "index": 57,
+    "timestamp": "2025-09-20T02:01:04.142Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "e5aa2ef87b4d086f7bc7f68f9dd2cb747aadc478d31f50c6d8043afd241ae9f5",
+    "hash": "1f3c45db11b46e95dc6370d4f3bb3a70a0dc0ee705d0117ef9780999062a8b35"
+  },
+  {
+    "index": 58,
+    "timestamp": "2025-09-20T02:01:04.439Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "1f3c45db11b46e95dc6370d4f3bb3a70a0dc0ee705d0117ef9780999062a8b35",
+    "hash": "4859720f6cc0242e7b2c4dc78b7e1a328b77923bb25c6d737343c484b3244360"
+  },
+  {
+    "index": 59,
+    "timestamp": "2025-09-20T02:01:04.819Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "4859720f6cc0242e7b2c4dc78b7e1a328b77923bb25c6d737343c484b3244360",
+    "hash": "8b7a7b85aa4927f353f62cf9f82d2bf2e56d99c5e3bda9516882755f6455e769"
+  },
+  {
+    "index": 60,
+    "timestamp": "2025-09-20T02:01:05.028Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "8b7a7b85aa4927f353f62cf9f82d2bf2e56d99c5e3bda9516882755f6455e769",
+    "hash": "ed53b6aba9de42e43ccb0801bb59562638e5077535cc0cc487a90c3df5d02d57"
+  },
+  {
+    "index": 61,
+    "timestamp": "2025-09-20T02:01:05.249Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "ed53b6aba9de42e43ccb0801bb59562638e5077535cc0cc487a90c3df5d02d57",
+    "hash": "850bae9e3bd259592f8d4b07e2513768795899772dea68cad015a02caa44f203"
+  },
+  {
+    "index": 62,
+    "timestamp": "2025-09-20T02:01:05.449Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "850bae9e3bd259592f8d4b07e2513768795899772dea68cad015a02caa44f203",
+    "hash": "4c6cf0e40fa61c3d7e98aa6fb332aa01f200277cedf53a2330dfc1e76530352d"
+  },
+  {
+    "index": 63,
+    "timestamp": "2025-09-20T02:01:05.610Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "4c6cf0e40fa61c3d7e98aa6fb332aa01f200277cedf53a2330dfc1e76530352d",
+    "hash": "7747a05ae2fffa9ccfa7daad6eec1511fbb239b158db915975cf2509b5f15350"
+  },
+  {
+    "index": 64,
+    "timestamp": "2025-09-20T02:01:05.818Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "7747a05ae2fffa9ccfa7daad6eec1511fbb239b158db915975cf2509b5f15350",
+    "hash": "f4eddcb7303298376b654e03d04a358e8a1c2eb0b777c9ef34f28b21fbd7144a"
+  },
+  {
+    "index": 65,
+    "timestamp": "2025-09-20T02:01:06.028Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "f4eddcb7303298376b654e03d04a358e8a1c2eb0b777c9ef34f28b21fbd7144a",
+    "hash": "25a88f48d9be504757571619fd8bbd488f2625d6bcdd479ceb717fa9584e5fd4"
+  },
+  {
+    "index": 66,
+    "timestamp": "2025-09-20T02:01:06.313Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "25a88f48d9be504757571619fd8bbd488f2625d6bcdd479ceb717fa9584e5fd4",
+    "hash": "0c0c88a4aaf80f4a35aa76219e57f5aea088cbd3e57c8b1c909fa74c649ce0fa"
+  },
+  {
+    "index": 67,
+    "timestamp": "2025-09-20T02:01:06.522Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "0c0c88a4aaf80f4a35aa76219e57f5aea088cbd3e57c8b1c909fa74c649ce0fa",
+    "hash": "502be06854a7b4ae5a385edc92aa1a27076f7d4ca75b8e6c6d9306f09a90da61"
+  },
+  {
+    "index": 68,
+    "timestamp": "2025-09-20T02:01:06.749Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "502be06854a7b4ae5a385edc92aa1a27076f7d4ca75b8e6c6d9306f09a90da61",
+    "hash": "16d2b04c5463681854a3ad563d70e82d3cf291c483a3614a3334374081b68ede"
+  },
+  {
+    "index": 69,
+    "timestamp": "2025-09-20T02:06:40.300Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "16d2b04c5463681854a3ad563d70e82d3cf291c483a3614a3334374081b68ede",
+    "hash": "8254871f43998f1b0e76fda8dcff703da3d39cb5aa19ea867f807b682ef2038c"
+  },
+  {
+    "index": 70,
+    "timestamp": "2025-09-20T02:06:52.596Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "8254871f43998f1b0e76fda8dcff703da3d39cb5aa19ea867f807b682ef2038c",
+    "hash": "ed010c41b4625bf037e9970af62bf1eeca89eabb56443861ab7e792d544f5920"
+  },
+  {
+    "index": 71,
+    "timestamp": "2025-09-20T02:07:26.063Z",
+    "type": "REGISTER_DEID",
+    "data": {
+      "request": {
+        "name": "Niranjan Borse",
+        "nationality": "UNKNOWN",
+        "phoneNumber": "08329957610",
+        "emergencyContact": "08329957610"
+      },
+      "response": {
+        "success": true,
+        "touristId": "TST_1758334046063_1O4NNR",
+        "publicKey": "MOCK_PUBLIC_KEY_1758334046063",
+        "privateKey": "MOCK_PRIVATE_KEY_1758334046063",
+        "message": "Tourist DeID registered successfully (DEMO MODE)"
+      }
+    },
+    "prevHash": "ed010c41b4625bf037e9970af62bf1eeca89eabb56443861ab7e792d544f5920",
+    "hash": "31d5ca35373fd3197aa86cb2560a9b964b270039525e7bd114a5146bcd3388be"
+  },
+  {
+    "index": 72,
+    "timestamp": "2025-09-20T02:08:00.296Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "31d5ca35373fd3197aa86cb2560a9b964b270039525e7bd114a5146bcd3388be",
+    "hash": "58856a9e2cbf1b532b502a67c4fd4813d098e715af48b126f83feccebf89dc11"
+  },
+  {
+    "index": 73,
+    "timestamp": "2025-09-20T02:08:02.302Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "58856a9e2cbf1b532b502a67c4fd4813d098e715af48b126f83feccebf89dc11",
+    "hash": "c742ef6f94e2752c51cdc623a570ac2d702187dd6aaeb1552cb5a47809abd791"
+  },
+  {
+    "index": 74,
+    "timestamp": "2025-09-20T02:08:02.781Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "c742ef6f94e2752c51cdc623a570ac2d702187dd6aaeb1552cb5a47809abd791",
+    "hash": "96202217c0242652b54eded17d6169fe3912b8f944ac63b4732b6393f6adf46c"
+  },
+  {
+    "index": 75,
+    "timestamp": "2025-09-20T02:08:03.662Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "96202217c0242652b54eded17d6169fe3912b8f944ac63b4732b6393f6adf46c",
+    "hash": "1c9a7ab29d1331e929e2469cf361f6e138d7d51652a1765d8ccca4cdf3ffe5f1"
+  },
+  {
+    "index": 76,
+    "timestamp": "2025-09-20T02:08:03.822Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "1c9a7ab29d1331e929e2469cf361f6e138d7d51652a1765d8ccca4cdf3ffe5f1",
+    "hash": "e460d8c6237021bf0065291b206749fd28e730399d5cd8914823bd4b1e587410"
+  },
+  {
+    "index": 77,
+    "timestamp": "2025-09-20T02:08:03.982Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "e460d8c6237021bf0065291b206749fd28e730399d5cd8914823bd4b1e587410",
+    "hash": "b783d0748ea6f24757d96cfc1ed012bae687014db77678f12bf5058a16f7f2ca"
+  },
+  {
+    "index": 78,
+    "timestamp": "2025-09-20T02:08:04.215Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "b783d0748ea6f24757d96cfc1ed012bae687014db77678f12bf5058a16f7f2ca",
+    "hash": "322500c63b5c6c4d1466eb673e85adcc1a1de81d411e1b60e198f1d6d128df34"
+  },
+  {
+    "index": 79,
+    "timestamp": "2025-09-20T02:08:04.431Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "322500c63b5c6c4d1466eb673e85adcc1a1de81d411e1b60e198f1d6d128df34",
+    "hash": "0f7e87919c392fb13093bee91f48b69c7c6ed1a0257588a7eda29d81e302a260"
+  },
+  {
+    "index": 80,
+    "timestamp": "2025-09-20T02:08:04.592Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "0f7e87919c392fb13093bee91f48b69c7c6ed1a0257588a7eda29d81e302a260",
+    "hash": "1a227eb6831a186b5fd9956cb901f07eb2a29e69a0b4a06cb6043447dbc0eea7"
+  },
+  {
+    "index": 81,
+    "timestamp": "2025-09-20T02:08:04.782Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "1a227eb6831a186b5fd9956cb901f07eb2a29e69a0b4a06cb6043447dbc0eea7",
+    "hash": "c2384548292e1f6fe26167102a2cfb397130739460a6ee1d4037b7d8d44ff8c8"
+  },
+  {
+    "index": 82,
+    "timestamp": "2025-09-20T02:08:05.101Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "c2384548292e1f6fe26167102a2cfb397130739460a6ee1d4037b7d8d44ff8c8",
+    "hash": "bfe7ec0ce4c1da15ef68ff5c4aea1a86f3e4e37cc67c0f4c7a48e2cf61679d03"
+  },
+  {
+    "index": 83,
+    "timestamp": "2025-09-20T02:08:05.324Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "bfe7ec0ce4c1da15ef68ff5c4aea1a86f3e4e37cc67c0f4c7a48e2cf61679d03",
+    "hash": "3cdd81cb9aea9f0274c8498620b91231168c6298ea96678b0cfe4c7e856abf2e"
+  },
+  {
+    "index": 84,
+    "timestamp": "2025-09-20T02:08:05.532Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "3cdd81cb9aea9f0274c8498620b91231168c6298ea96678b0cfe4c7e856abf2e",
+    "hash": "1c2f60fd3d2621a1c3492b8b9ce5ebaea034ba542d2808ffbb586e3d595b88f5"
+  },
+  {
+    "index": 85,
+    "timestamp": "2025-09-20T02:08:05.742Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "1c2f60fd3d2621a1c3492b8b9ce5ebaea034ba542d2808ffbb586e3d595b88f5",
+    "hash": "edc638cb8a36e85724dfeab380c0e34ad248784d9b2e3c26da590875efb2b091"
+  },
+  {
+    "index": 86,
+    "timestamp": "2025-09-20T02:08:05.984Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "edc638cb8a36e85724dfeab380c0e34ad248784d9b2e3c26da590875efb2b091",
+    "hash": "622b5a4e9fbc98163cc13372f7754ca04889f194fdc5d3535de9ca16803ac7bd"
+  },
+  {
+    "index": 87,
+    "timestamp": "2025-09-20T02:08:06.182Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "622b5a4e9fbc98163cc13372f7754ca04889f194fdc5d3535de9ca16803ac7bd",
+    "hash": "ac4ca5fa1d0bd1e0a862292a601731b2ae94cd769312b0e6b320c1a47493287b"
+  },
+  {
+    "index": 88,
+    "timestamp": "2025-09-20T02:08:06.441Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "ac4ca5fa1d0bd1e0a862292a601731b2ae94cd769312b0e6b320c1a47493287b",
+    "hash": "693e8f5cde10069dd7eac5458b049e06541aa853a79a930808c364922f65b926"
+  },
+  {
+    "index": 89,
+    "timestamp": "2025-09-20T02:08:06.603Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "693e8f5cde10069dd7eac5458b049e06541aa853a79a930808c364922f65b926",
+    "hash": "faad09b54d9c568437ef47f830f4afdaa29f5631271b86dfce9bc4ad24ccb216"
+  },
+  {
+    "index": 90,
+    "timestamp": "2025-09-20T02:08:06.862Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "faad09b54d9c568437ef47f830f4afdaa29f5631271b86dfce9bc4ad24ccb216",
+    "hash": "e2b2f9d165e019c8514b863695cb31813cb7e54c1f2f7417534397e64b30ea33"
+  },
+  {
+    "index": 91,
+    "timestamp": "2025-09-20T02:08:07.032Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "e2b2f9d165e019c8514b863695cb31813cb7e54c1f2f7417534397e64b30ea33",
+    "hash": "1ce3fda7d57ed4e2547890c4d6e98a466536058381ca148f93b33b2af8aa25b4"
+  },
+  {
+    "index": 92,
+    "timestamp": "2025-09-20T02:08:07.263Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "1ce3fda7d57ed4e2547890c4d6e98a466536058381ca148f93b33b2af8aa25b4",
+    "hash": "8d8b0c3c7c139d5d920d99ddb9d46da2a72a61828926ee32caca41d4557a9aba"
+  },
+  {
+    "index": 93,
+    "timestamp": "2025-09-20T02:08:20.936Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "8d8b0c3c7c139d5d920d99ddb9d46da2a72a61828926ee32caca41d4557a9aba",
+    "hash": "3fe2a4a0d80d3390dcbcc74f3cfd716e45210dc5d3bf899103fc2224cca4781d"
   }
 ]

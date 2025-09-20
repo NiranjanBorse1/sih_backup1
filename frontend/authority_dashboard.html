@@ -124,7 +124,33 @@
             drawingManager.setDrawingMode(null);
         }
 
-        function clearGeofence() { if (currentPolygon) { currentPolygon.setMap(null); currentPolygon = null; }}
+        function clearGeofence() {
+            // Remove the in-progress drawn polygon
+            if (currentPolygon) {
+                currentPolygon.setMap(null);
+                currentPolygon = null;
+            }
+            // Also remove any persisted polygons drawn on the map (client-side)
+            if (persistedPolygons && persistedPolygons.length > 0) {
+                persistedPolygons.forEach(p => p.setMap(null));
+                persistedPolygons = [];
+            }
+
+            // Ask the operator if they want to delete persisted geofences on the server as well
+            if (confirm('Also delete all persisted geofences from the server? This cannot be undone.')) {
+                fetch('http://127.0.0.1:3002/geofence/delete_all', { method: 'POST' })
+                    .then(r => r.json())
+                    .then(() => {
+                        // Refresh to show no persisted geofences
+                        fetchAndDrawGeofences();
+                        alert('All persisted geofences deleted on server.');
+                    })
+                    .catch(err => {
+                        console.error('Failed to delete persisted geofences:', err);
+                        alert('Failed to delete persisted geofences on server. See console for details.');
+                    });
+            }
+        }
 
         async function fetchAndDrawGeofences() {
             try {

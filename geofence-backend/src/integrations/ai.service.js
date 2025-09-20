@@ -5,8 +5,8 @@ const axios = require('axios');
  */
 class AIService {
   constructor() {
-    // New Python FastAPI AI engine defaults to port 8000
-    this.baseUrl = process.env.AI_ENGINE_URL || 'http://localhost:8000';
+  // New Python FastAPI AI engine defaults to port 8001 (user-specified)
+  this.baseUrl = process.env.AI_ENGINE_URL || 'http://localhost:8001';
   }
   
   /**

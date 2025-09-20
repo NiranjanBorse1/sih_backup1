@@ -76,6 +76,20 @@ router.post('/create', geofenceController.createGeofence);
  */
 router.get('/all', geofenceController.getAllGeofences);
 
+/**
+ * @swagger
+ * /geofence/delete_all:
+ *   post:
+ *     summary: Delete all persisted geofences (dangerous)
+ *     tags: [Geofences]
+ *     responses:
+ *       200:
+ *         description: All geofences deleted
+ *       500:
+ *         description: Server error
+ */
+router.post('/delete_all', geofenceController.deleteAllGeofences);
+
 
 
 /* Reordered: dynamic '/:id' routes are appended after specific routes (/check, /bulkCheck, /breaches) to avoid shadowing */

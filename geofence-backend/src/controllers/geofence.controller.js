@@ -302,6 +302,18 @@ class GeofenceController {
       next(error);
     }
   }
+
+  /**
+   * Delete all persisted geofences (dangerous operation)
+   */
+  async deleteAllGeofences(req, res, next) {
+    try {
+      await geofenceService.deleteAllGeofences();
+      res.status(200).json({ status: 'success', message: 'All geofences deleted' });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = new GeofenceController();
