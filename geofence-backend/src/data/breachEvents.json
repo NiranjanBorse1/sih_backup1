@@ -9,7 +9,7 @@
     },
     "zoneType": "danger",
     "severity": "critical",
-    "status": "new",
+    "status": "resolved",
     "forwardedToBlockchain": false,
     "alertSent": false,
     "processed": false,
@@ -25,7 +25,7 @@
     },
     "zoneType": "danger",
     "severity": "critical",
-    "status": "new",
+    "status": "resolved",
     "forwardedToBlockchain": false,
     "alertSent": false,
     "processed": false,
@@ -41,7 +41,7 @@
     },
     "zoneType": "danger",
     "severity": "critical",
-    "status": "new",
+    "status": "resolved",
     "forwardedToBlockchain": false,
     "alertSent": false,
     "processed": false,
@@ -57,7 +57,7 @@
     },
     "zoneType": "danger",
     "severity": "critical",
-    "status": "new",
+    "status": "resolved",
     "forwardedToBlockchain": false,
     "alertSent": false,
     "processed": false,
@@ -73,10 +73,58 @@
     },
     "zoneType": "danger",
     "severity": "critical",
-    "status": "new",
+    "status": "resolved",
     "forwardedToBlockchain": false,
     "alertSent": false,
     "processed": false,
     "timestamp": "2025-09-20T03:25:21.465Z"
+  },
+  {
+    "id": "1758341007493",
+    "touristId": "12345",
+    "geofenceId": "sos",
+    "coordinates": {
+      "lat": 18.489644,
+      "lng": 73.8108635
+    },
+    "zoneType": "danger",
+    "severity": "critical",
+    "status": "resolved",
+    "forwardedToBlockchain": false,
+    "alertSent": false,
+    "processed": false,
+    "timestamp": "2025-09-20T04:03:27.493Z"
+  },
+  {
+    "id": "1758341788309",
+    "touristId": "234324",
+    "geofenceId": "sos",
+    "coordinates": {
+      "lat": 18.489949404036693,
+      "lng": 73.81054839779816
+    },
+    "zoneType": "danger",
+    "severity": "critical",
+    "status": "new",
+    "forwardedToBlockchain": false,
+    "alertSent": false,
+    "processed": false,
+    "timestamp": "2025-09-20T04:16:28.309Z"
+  },
+  {
+    "id": "1758341842336",
+    "touristId": "234324",
+    "geofenceId": "sos",
+    "coordinates": {
+      "lat": 18.489644,
+      "lng": 73.8108635
+    },
+    "zoneType": "danger",
+    "severity": "critical",
+    "status": "new",
+    "forwardedToBlockchain": false,
+    "alertSent": false,
+    "processed": false,
+    "timestamp": "2025-09-20T04:17:22.336Z"
   }
 ]

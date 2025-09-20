@@ -80,6 +80,29 @@
     let persistedPolygons = [];
         let activeAlerts = {};
 
+        // Normalize various backend alert shapes into a single UI-friendly format
+        function normalizeAlert(raw, idx = 0) {
+            const id = raw.id || raw._id || raw.breachId || raw.incidentId || `alert_${raw.timestamp || Date.now()}_${idx}`;
+            const type = raw.type || raw.eventType || raw.alertType || 'alert';
+            const message = raw.message || raw.description || raw.details || 'Alert';
+            const status = (raw.status || raw.state || 'open').toLowerCase();
+            // Expanded phone extraction across common shapes
+            const contactPhone =
+                raw.contactPhone ||
+                raw.tourist?.emergencyContact?.phone ||
+                raw.tourist?.emergencyContactPhone ||
+                raw.tourist?.emergencyContact ||              // sometimes stored directly as string
+                raw.user?.emergencyContact?.phone ||
+                raw.user?.emergencyContact ||                 // SOS payload from tourist_app
+                raw.emergencyContact?.phone ||
+                raw.emergencyContactPhone ||
+                raw.emergencyContact ||
+                raw.phone ||
+                raw.phoneNumber ||
+                '';
+            return { ...raw, id, type, message, status, contactPhone };
+        }
+
         // This function name now matches the callback in the script tag
         function initDashboard() {
             map = new google.maps.Map(document.getElementById('map'), { center: { lat: 18.5204, lng: 73.8567 }, zoom: 13 });
@@ -229,39 +252,39 @@
             try {
                 const response = await fetch('http://127.0.0.1:3002/geofence/breaches');
                 const data = await response.json();
-                const activeAlertsFromServer = (data.data?.breachEvents || []).filter(a => a.status !== 'resolved');
-                document.getElementById('metric-emergencies').textContent = activeAlertsFromServer.length;
+
+                // Support multiple possible response shapes
+                const rawList = data?.data?.breachEvents || data?.data?.alerts || data?.breaches || data?.alerts || [];
+                const normalized = rawList.map((a, i) => normalizeAlert(a, i));
+
+                // Keep only non-resolved for "Active Emergencies"
+                const active = normalized.filter(a => a.status !== 'resolved');
+                document.getElementById('metric-emergencies').textContent = active.length;
 
                 const container = document.getElementById('alertContainer');
-                const existingAlertIds = Array.from(container.children).map(child => child.id.replace('alert-', ''));
-                const serverAlertIds = activeAlertsFromServer.map(a => a.id);
 
-                // Remove alerts from UI that are no longer sent by the server
-                existingAlertIds.forEach(id => {
-                    if (!serverAlertIds.includes(id) && id) {
-                        const card = document.getElementById(`alert-${id}`);
-                        if (card) card.remove();
-                    }
-                });
-
-                if (activeAlertsFromServer.length === 0 && container.children.length === 0) {
+                // Remove placeholder if we have at least one alert
+                if (active.length > 0) {
+                    const placeholder = container.querySelector('p');
+                    if (placeholder) container.innerHTML = '';
+                } else if (container.children.length === 0) {
                     container.innerHTML = '<p class="text-gray-500 text-center pt-20">Monitoring for new alerts...</p>';
                 }
 
-                activeAlertsFromServer.forEach(alert => {
-                    // normalize contact phone if present in event payload
-                    if (!alert.contactPhone && alert.tourist && alert.tourist.emergencyContact) {
-                        alert.contactPhone = alert.tourist.emergencyContact.phone;
-                    }
-                    const existingCard = document.getElementById(`alert-${alert.id}`);
-                    if (!existingCard) {
-                        if (container.querySelector('p')) container.innerHTML = '';
+                // Remove UI cards that no longer exist on server
+                const serverIds = new Set(active.map(a => a.id));
+                Array.from(container.children).forEach(child => {
+                    const id = child.id?.replace('alert-', '');
+                    if (id && !serverIds.has(id)) child.remove();
+                });
+
+                // Add or update cards
+                active.forEach(alert => {
+                    const existing = document.getElementById(`alert-${alert.id}`);
+                    if (!existing) {
                         container.insertAdjacentHTML('afterbegin', createAlertCard(alert));
-                    } else {
-                        // Check if the status has changed and update if necessary
-                        if (existingCard.dataset.status !== alert.status) {
-                            existingCard.outerHTML = createAlertCard(alert);
-                        }
+                    } else if (existing.dataset.status !== alert.status) {
+                        existing.outerHTML = createAlertCard(alert);
                     }
                 });
             } catch (error) {
@@ -270,17 +293,23 @@
         }
         
         function createAlertCard(alert) {
+            const title = String(alert.type || 'ALERT').replace(/_/g, ' ').toUpperCase();
+            const isSos = /(sos|sos alert|emergency)/i.test(String(alert.type || ''));
+            const bgColor = isSos ? 'bg-red-100 border-red-500' : 'bg-yellow-100 border-yellow-500';
             const isAcknowledged = alert.status === 'acknowledged';
-            const bgColor = alert.type === 'SOS_ALERT' ? 'bg-red-100 border-red-500' : 'bg-yellow-100 border-yellow-500';
+            const message = String(alert.message || 'Alert');
+
             const buttons = isAcknowledged 
                 ? `<div><button onclick="resolveAlert('${alert.id}')" class="w-full mt-2 bg-green-500 text-white text-sm font-bold py-1 px-3 rounded hover:bg-green-600">Resolve</button></div>`
-                : `<div class="space-y-2"><button onclick="acknowledgeAlert('${alert.id}')" class="w-full mt-2 bg-blue-500 text-white text-sm font-bold py-1 px-3 rounded hover:bg-blue-600">Acknowledge & Dispatch</button>
-                       <button onclick="sendWhatsAppPrompt('${(alert.contactPhone || '')}')" class="w-full mt-1 bg-green-500 text-white text-sm font-bold py-1 px-3 rounded hover:bg-green-600">Send WhatsApp</button></div>`;
+                : `<div class="space-y-2">
+                       <button onclick="acknowledgeAlert('${alert.id}')" class="w-full mt-2 bg-blue-500 text-white text-sm font-bold py-1 px-3 rounded hover:bg-blue-600">Acknowledge & Dispatch</button>
+                       <button onclick="sendWhatsAppPrompt('${(alert.contactPhone || '')}')" class="w-full mt-1 bg-green-500 text-white text-sm font-bold py-1 px-3 rounded hover:bg-green-600">Send WhatsApp</button>
+                   </div>`;
 
             return `
                 <div id="alert-${alert.id}" data-status="${alert.status}" class="${bgColor} border-l-4 p-3 rounded-lg shadow-sm">
-                    <p class="font-bold text-gray-800">${alert.type.replace('_', ' ')}</p>
-                    <p class="text-sm text-gray-700">${alert.message}</p>
+                    <p class="font-bold text-gray-800">${title}</p>
+                    <p class="text-sm text-gray-700">${message}</p>
                     <p class="text-xs text-gray-500">Status: ${alert.status}</p>
                     ${buttons}
                 </div>`;
@@ -288,11 +317,16 @@
 
         // Prompt operator for message text then call backend
         function sendWhatsAppPrompt(phone) {
-            if (!phone) return alert('No phone number available for this alert.');
+            let targetPhone = phone && String(phone).trim();
+            if (!targetPhone) {
+                const entered = prompt('Enter WhatsApp phone number (e.g., +91XXXXXXXXXX):', '');
+                if (!entered) return; // user cancelled
+                targetPhone = entered.trim();
+            }
             const defaultMsg = 'This is an official alert from Authority Command Center regarding your safety. Reply for help.';
-            const message = prompt('Message to send via WhatsApp to ' + phone + ':', defaultMsg);
+            const message = prompt('Message to send via WhatsApp to ' + targetPhone + ':', defaultMsg);
             if (message !== null) {
-                sendWhatsApp(phone, message);
+                sendWhatsApp(targetPhone, message);
             }
         }
 
@@ -375,7 +409,7 @@
                 // Verify chain and show toast-like status in title
                 const verify = await fetch('http://127.0.0.1:3001/audit/verify').then(r => r.json());
                 const valid = verify?.result?.valid;
-                document.querySelector('h3.text-lg.font-bold.text-gray-800').textContent = `Audit Chain (Demo)${valid ? ' ✅' : ' ❌'}`;
+                document.querySelector('h3.text-lg.font-bold.text-gray-800').textContent = `Live Map (Demo)${valid ? ' ✅' : ' ❌'}`;
             } catch (e) {
                 console.error('Failed to fetch audit chain:', e);
             }

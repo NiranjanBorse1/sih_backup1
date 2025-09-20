@@ -2138,5 +2138,269 @@
     },
     "prevHash": "97b3058c93e28afe0e20acba9ab7e605cda7de15735d4ed130906fc244757809",
     "hash": "637294e9ab989eb48fae1ee06cec78673a684a60dc020e299bee46db45ece9ba"
+  },
+  {
+    "index": 116,
+    "timestamp": "2025-09-20T04:00:30.313Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "637294e9ab989eb48fae1ee06cec78673a684a60dc020e299bee46db45ece9ba",
+    "hash": "791cddea69901f83b1c08b46ce81d2cfc0f8d3dae219212fedf9e45f2f3c1809"
+  },
+  {
+    "index": 117,
+    "timestamp": "2025-09-20T04:00:54.468Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "791cddea69901f83b1c08b46ce81d2cfc0f8d3dae219212fedf9e45f2f3c1809",
+    "hash": "032d4cad22ce357d0a9ed5ebcf99b617c35a7a0198570df46f56eb9ae93ef7f4"
+  },
+  {
+    "index": 118,
+    "timestamp": "2025-09-20T04:03:22.384Z",
+    "type": "REGISTER_DEID",
+    "data": {
+      "request": {
+        "name": "Ashwin Mathur",
+        "nationality": "UNKNOWN",
+        "phoneNumber": "12",
+        "emergencyContact": "12"
+      },
+      "response": {
+        "success": true,
+        "touristId": "TST_1758341002384_2YSDKR",
+        "publicKey": "MOCK_PUBLIC_KEY_1758341002384",
+        "privateKey": "MOCK_PRIVATE_KEY_1758341002384",
+        "message": "Tourist DeID registered successfully (DEMO MODE)"
+      }
+    },
+    "prevHash": "032d4cad22ce357d0a9ed5ebcf99b617c35a7a0198570df46f56eb9ae93ef7f4",
+    "hash": "5b164241af01c205d6b28caf5cdbbc0b98d541b74fa930cad704d575cbc626ac"
+  },
+  {
+    "index": 119,
+    "timestamp": "2025-09-20T04:03:33.367Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "5b164241af01c205d6b28caf5cdbbc0b98d541b74fa930cad704d575cbc626ac",
+    "hash": "eb6610c9f66c3f4b1517fb070bf27558e15447248551a239e11c60dca6cc454e"
+  },
+  {
+    "index": 120,
+    "timestamp": "2025-09-20T04:03:37.418Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "eb6610c9f66c3f4b1517fb070bf27558e15447248551a239e11c60dca6cc454e",
+    "hash": "9f343d08e919386d383948cdcc807d84b59ced9d1a3ac200bec30cc4ca7c29fc"
+  },
+  {
+    "index": 121,
+    "timestamp": "2025-09-20T04:04:29.064Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "9f343d08e919386d383948cdcc807d84b59ced9d1a3ac200bec30cc4ca7c29fc",
+    "hash": "031c3a12c4fa5c2aad3718848441b3160b9fa6b8ac55b6309271a18429fc01f6"
+  },
+  {
+    "index": 122,
+    "timestamp": "2025-09-20T04:11:12.374Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "031c3a12c4fa5c2aad3718848441b3160b9fa6b8ac55b6309271a18429fc01f6",
+    "hash": "fee289de4ab27979248ccecfbd9240ab43cb076e72273b7e1280da67225336ee"
+  },
+  {
+    "index": 123,
+    "timestamp": "2025-09-20T04:14:07.514Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "fee289de4ab27979248ccecfbd9240ab43cb076e72273b7e1280da67225336ee",
+    "hash": "ae70685d8fb648a3e0d0968f29c5fd4a405317f5065a9e68c031e55aa100a325"
+  },
+  {
+    "index": 124,
+    "timestamp": "2025-09-20T04:16:03.451Z",
+    "type": "REGISTER_DEID",
+    "data": {
+      "request": {
+        "name": "Ashwin Mathur",
+        "nationality": "UNKNOWN",
+        "phoneNumber": "9767122546",
+        "emergencyContact": "9767122546"
+      },
+      "response": {
+        "success": true,
+        "touristId": "TST_1758341763433_OYYG7B",
+        "publicKey": "MOCK_PUBLIC_KEY_1758341763433",
+        "privateKey": "MOCK_PRIVATE_KEY_1758341763433",
+        "message": "Tourist DeID registered successfully (DEMO MODE)"
+      }
+    },
+    "prevHash": "ae70685d8fb648a3e0d0968f29c5fd4a405317f5065a9e68c031e55aa100a325",
+    "hash": "1098ed3d26873cdc7b3857d21f476ea34dd55da4e340755204ea04e7716081ac"
+  },
+  {
+    "index": 125,
+    "timestamp": "2025-09-20T04:16:15.896Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "1098ed3d26873cdc7b3857d21f476ea34dd55da4e340755204ea04e7716081ac",
+    "hash": "b91872b1920962f61d9362e3d9dbdfc14c04762e253634ea1a0ebb689801dbc8"
+  },
+  {
+    "index": 126,
+    "timestamp": "2025-09-20T04:16:31.966Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "b91872b1920962f61d9362e3d9dbdfc14c04762e253634ea1a0ebb689801dbc8",
+    "hash": "b7c5b5752595bfbacebc827c53898e3048adb45fbaed7586b62b7a3c270bf71f"
+  },
+  {
+    "index": 127,
+    "timestamp": "2025-09-20T04:17:17.996Z",
+    "type": "REGISTER_DEID",
+    "data": {
+      "request": {
+        "name": "Ashwin Mathur",
+        "nationality": "UNKNOWN",
+        "phoneNumber": "+919767122546",
+        "emergencyContact": "+919767122546"
+      },
+      "response": {
+        "success": true,
+        "touristId": "TST_1758341837995_YN5FWX",
+        "publicKey": "MOCK_PUBLIC_KEY_1758341837995",
+        "privateKey": "MOCK_PRIVATE_KEY_1758341837995",
+        "message": "Tourist DeID registered successfully (DEMO MODE)"
+      }
+    },
+    "prevHash": "b7c5b5752595bfbacebc827c53898e3048adb45fbaed7586b62b7a3c270bf71f",
+    "hash": "bb223ec63d8bb862bc8a10ed3df80c9faed7841a7b284be53b9c3b73bdcb8bcb"
+  },
+  {
+    "index": 128,
+    "timestamp": "2025-09-20T04:17:25.851Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "bb223ec63d8bb862bc8a10ed3df80c9faed7841a7b284be53b9c3b73bdcb8bcb",
+    "hash": "893b379a0952ffe4942b9a60fff5bf93f9b4a6c4b69a69b953992750b9cd5be5"
+  },
+  {
+    "index": 129,
+    "timestamp": "2025-09-20T04:18:58.145Z",
+    "type": "QUERY_INCIDENTS_REGION",
+    "data": {
+      "region": {
+        "bounds": {
+          "north": 90,
+          "south": -90,
+          "east": 180,
+          "west": -180
+        }
+      },
+      "count": 1
+    },
+    "prevHash": "893b379a0952ffe4942b9a60fff5bf93f9b4a6c4b69a69b953992750b9cd5be5",
+    "hash": "b4cd869225100994f9205074470e5949ac1f43bb11c70c9447a274944c093557"
   }
 ]
