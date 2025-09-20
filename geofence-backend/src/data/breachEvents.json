@@ -1,1 +1,82 @@
-[]
+[
+  {
+    "id": "1758338079958",
+    "touristId": "t123",
+    "geofenceId": "sos",
+    "coordinates": {
+      "lat": 18.5204,
+      "lng": 73.8567
+    },
+    "zoneType": "danger",
+    "severity": "critical",
+    "status": "new",
+    "forwardedToBlockchain": false,
+    "alertSent": false,
+    "processed": false,
+    "timestamp": "2025-09-20T03:14:39.958Z"
+  },
+  {
+    "id": "1758338189853",
+    "touristId": "t123",
+    "geofenceId": "sos",
+    "coordinates": {
+      "lat": 18.5204,
+      "lng": 73.8567
+    },
+    "zoneType": "danger",
+    "severity": "critical",
+    "status": "new",
+    "forwardedToBlockchain": false,
+    "alertSent": false,
+    "processed": false,
+    "timestamp": "2025-09-20T03:16:29.853Z"
+  },
+  {
+    "id": "1758338276480",
+    "touristId": "123456",
+    "geofenceId": "sos",
+    "coordinates": {
+      "lat": 18.48489,
+      "lng": 73.81517
+    },
+    "zoneType": "danger",
+    "severity": "critical",
+    "status": "new",
+    "forwardedToBlockchain": false,
+    "alertSent": false,
+    "processed": false,
+    "timestamp": "2025-09-20T03:17:56.480Z"
+  },
+  {
+    "id": "1758338628118",
+    "touristId": "123456",
+    "geofenceId": "sos",
+    "coordinates": {
+      "lat": 18.485961423290206,
+      "lng": 73.81422919593346
+    },
+    "zoneType": "danger",
+    "severity": "critical",
+    "status": "new",
+    "forwardedToBlockchain": false,
+    "alertSent": false,
+    "processed": false,
+    "timestamp": "2025-09-20T03:23:48.118Z"
+  },
+  {
+    "id": "1758338721465",
+    "touristId": "t999",
+    "geofenceId": "sos",
+    "coordinates": {
+      "lat": 18.5204,
+      "lng": 73.8567
+    },
+    "zoneType": "danger",
+    "severity": "critical",
+    "status": "new",
+    "forwardedToBlockchain": false,
+    "alertSent": false,
+    "processed": false,
+    "timestamp": "2025-09-20T03:25:21.465Z"
+  }
+]

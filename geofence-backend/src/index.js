@@ -49,6 +49,10 @@ const swaggerSpec = swaggerJsdoc(swaggerOptions);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // API routes
+// Legacy/compatibility endpoints for tourist app alerts
+const geofenceController = require('./controllers/geofence.controller');
+app.post('/alerts/sos', (req, res, next) => geofenceController.receiveSOS(req, res, next));
+
 app.use('/geofence', geofenceRoutes);
 
 // Health check endpoint

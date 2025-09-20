@@ -217,6 +217,9 @@
                     <p class="text-sm text-gray-600 capitalize"><span class="status-dot status-${touristData.status}"></span>Status: ${touristData.status.replace('-', ' ')}</p>
                     <hr class="my-2">
                     <p class="text-sm"><b>Emergency Contact:</b><br>${touristData.emergencyContact.name} (${touristData.emergencyContact.phone})</p>
+                    <div class="mt-3">
+                        <button onclick="sendWhatsAppPrompt('${touristData.emergencyContact.phone}')" class="w-full bg-green-500 text-white text-sm font-bold py-1 px-3 rounded hover:bg-green-600">Send WhatsApp</button>
+                    </div>
                 </div>`;
             infoWindow.setContent(content);
             infoWindow.open(map, marker);
@@ -246,6 +249,10 @@
                 }
 
                 activeAlertsFromServer.forEach(alert => {
+                    // normalize contact phone if present in event payload
+                    if (!alert.contactPhone && alert.tourist && alert.tourist.emergencyContact) {
+                        alert.contactPhone = alert.tourist.emergencyContact.phone;
+                    }
                     const existingCard = document.getElementById(`alert-${alert.id}`);
                     if (!existingCard) {
                         if (container.querySelector('p')) container.innerHTML = '';
@@ -266,8 +273,9 @@
             const isAcknowledged = alert.status === 'acknowledged';
             const bgColor = alert.type === 'SOS_ALERT' ? 'bg-red-100 border-red-500' : 'bg-yellow-100 border-yellow-500';
             const buttons = isAcknowledged 
-                ? `<button onclick="resolveAlert('${alert.id}')" class="w-full mt-2 bg-green-500 text-white text-sm font-bold py-1 px-3 rounded hover:bg-green-600">Resolve</button>`
-                : `<button onclick="acknowledgeAlert('${alert.id}')" class="w-full mt-2 bg-blue-500 text-white text-sm font-bold py-1 px-3 rounded hover:bg-blue-600">Acknowledge & Dispatch</button>`;
+                ? `<div><button onclick="resolveAlert('${alert.id}')" class="w-full mt-2 bg-green-500 text-white text-sm font-bold py-1 px-3 rounded hover:bg-green-600">Resolve</button></div>`
+                : `<div class="space-y-2"><button onclick="acknowledgeAlert('${alert.id}')" class="w-full mt-2 bg-blue-500 text-white text-sm font-bold py-1 px-3 rounded hover:bg-blue-600">Acknowledge & Dispatch</button>
+                       <button onclick="sendWhatsAppPrompt('${(alert.contactPhone || '')}')" class="w-full mt-1 bg-green-500 text-white text-sm font-bold py-1 px-3 rounded hover:bg-green-600">Send WhatsApp</button></div>`;
 
             return `
                 <div id="alert-${alert.id}" data-status="${alert.status}" class="${bgColor} border-l-4 p-3 rounded-lg shadow-sm">
@@ -276,6 +284,28 @@
                     <p class="text-xs text-gray-500">Status: ${alert.status}</p>
                     ${buttons}
                 </div>`;
+        }
+
+        // Prompt operator for message text then call backend
+        function sendWhatsAppPrompt(phone) {
+            if (!phone) return alert('No phone number available for this alert.');
+            const defaultMsg = 'This is an official alert from Authority Command Center regarding your safety. Reply for help.';
+            const message = prompt('Message to send via WhatsApp to ' + phone + ':', defaultMsg);
+            if (message !== null) {
+                sendWhatsApp(phone, message);
+            }
+        }
+
+        async function sendWhatsApp(phone, message) {
+            try {
+                const resp = await fetch('http://127.0.0.1:3002/geofence/notifications/whatsapp', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ phone, message }) });
+                const data = await resp.json();
+                if (!resp.ok) throw new Error(data?.message || 'Unknown error');
+                alert('WhatsApp message queued: ' + (data?.message || 'sent'));
+            } catch (err) {
+                console.error('Failed to send WhatsApp:', err);
+                alert('Failed to send WhatsApp: ' + (err.message || err));
+            }
         }
         
         async function acknowledgeAlert(alertId) {

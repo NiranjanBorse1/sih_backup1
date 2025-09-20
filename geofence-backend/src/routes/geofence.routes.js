@@ -89,6 +89,8 @@ router.get('/all', geofenceController.getAllGeofences);
  *         description: Server error
  */
 router.post('/delete_all', geofenceController.deleteAllGeofences);
+// Notifications (WhatsApp) - allows authorities to send WhatsApp messages to tourists
+router.post('/notifications/whatsapp', geofenceController.notifyWhatsApp);
 
 
 

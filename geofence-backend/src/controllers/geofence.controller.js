@@ -1,6 +1,7 @@
 const geofenceService = require('../services/geofence.service');
 const blockchainService = require('../integrations/blockchain.service');
 const alertService = require('../integrations/alert.service');
+const twilioService = require('../integrations/twilio.service');
 
 /**
  * Geofence Controller - Handles HTTP requests for geofence operations
@@ -196,6 +197,43 @@ class GeofenceController {
       next(error);
     }
   }
+
+  /**
+   * Receive SOS alerts posted by tourist app (legacy endpoint support)
+   */
+  async receiveSOS(req, res, next) {
+    try {
+      const data = req.body || {};
+      const user = data.user || {};
+      const location = data.location || {};
+
+      // Create breach-like event for dashboard consumption
+      const breachEvent = await geofenceService.recordBreachEvent(user.digitalId || user.id || 'unknown', { lat: location.lat, lng: location.lng }, {
+        id: 'sos', name: 'SOS (manual)', zoneType: 'danger', severity: 'critical'
+      });
+
+      // Try forwarding to blockchain (async)
+      blockchainService.logIncident({
+        touristId: user.digitalId || user.id || 'unknown',
+        eventType: 'sos',
+        location: { latitude: location.lat, longitude: location.lng },
+        severity: 'critical',
+        description: `SOS triggered by ${user.name || 'unknown'}`
+      }).catch(err => console.error('Failed to log SOS to blockchain:', err));
+
+      // Notify authorities via alert service (async)
+      alertService.sendAlert({
+        touristId: user.digitalId || user.id || 'unknown',
+        alertType: 'SOS_ALERT',
+        location: { lat: location.lat, lng: location.lng },
+        message: `SOS triggered by ${user.name || 'unknown'}`
+      }).catch(err => console.error('Failed to send SOS alert:', err));
+
+      return res.status(200).json({ status: 'success', message: 'SOS received' });
+    } catch (error) {
+      next(error);
+    }
+  }
   
   /**
    * Bulk check multiple points against geofences
@@ -310,6 +348,27 @@ class GeofenceController {
     try {
       await geofenceService.deleteAllGeofences();
       res.status(200).json({ status: 'success', message: 'All geofences deleted' });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * Send a WhatsApp notification to a phone number (used by authorities)
+   */
+  async notifyWhatsApp(req, res, next) {
+    try {
+      const { phone, message } = req.body || {};
+      if (!phone || !message) {
+        return res.status(400).json({ status: 'error', message: 'phone and message are required' });
+      }
+      try {
+        const result = await twilioService.sendWhatsApp(phone, message);
+        return res.status(200).json({ status: 'success', data: result });
+      } catch (twErr) {
+        console.error('Twilio error:', twErr.message || twErr);
+        return res.status(500).json({ status: 'error', message: 'Failed to send WhatsApp message', detail: twErr.message || String(twErr) });
+      }
     } catch (error) {
       next(error);
     }
