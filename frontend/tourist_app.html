@@ -83,6 +83,8 @@
                     map.setCenter(userLocation);
                 }, () => handleLocationError(true));
             } else { handleLocationError(false); }
+            // Draw persisted geofences on load so tourists see the zones immediately
+            fetchAndDrawGeofence();
         }
         
         document.getElementById('touristForm').addEventListener('submit', async (e) => {
